@@ -8,10 +8,6 @@ export default {
   ],
   theme: {
     extend: {
-      colors: {
-        primary: "#128739",
-        light_primary: "#15A445",
-      },
       fontFamily: {
         sans: ["Ubuntu", "sans-serif"],
       },
