@@ -1,0 +1,36 @@
+interface TextInputProps {
+    id: string;
+    label: string;
+    type?: string;
+    onChange: (value: string) => void;
+    placeholder?: string;
+    required?: boolean;
+}
+  
+export function TextInput({
+    id,
+    label,
+    type = 'text',
+    onChange,
+    placeholder,
+    required = false,
+}: TextInputProps) {
+    return (
+      <div>
+        <label
+          className={`block text-primary-400 font-medium mb-1`}
+          htmlFor={id}
+        >
+          {label}
+        </label>
+        <input
+          id={id}
+          type={type}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={placeholder}
+          className={`w-full p-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-400`}
+          required={required}
+        />
+      </div>
+    );
+}
