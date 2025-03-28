@@ -4,17 +4,21 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 interface PasswordInputProps {
     id: string;
     label: string;
+    value: string;
     onChange: (value: string) => void;
     placeholder?: string;
     required?: boolean;
+    ringColor?: string;
   }
   
 export function PasswordInput({
     id,
     label,
+    value,
     onChange,
     placeholder,
     required = false,
+    ringColor = "primary-400",
 }: PasswordInputProps) {
     const [showPassword, setShowPassword] = useState(false);
 
@@ -33,9 +37,10 @@ export function PasswordInput({
         <input
           id={id}
           type={showPassword ? "text" : "password"}
+          value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
-          className={`w-full p-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-400`}
+          className={`w-full p-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-${ringColor}`}
           required={required}
         />
         <button
