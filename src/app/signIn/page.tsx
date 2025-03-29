@@ -13,6 +13,7 @@ import { PasswordInput } from "../../components/PasswordInput";
 import { useForm } from "@tanstack/react-form";
 import { z } from "zod";
 import Loader from "react-spinners/ClipLoader";
+import AMLogo from "../../assets/am-logo.png";
 
 const signInSchema = z.object({
     email: z.string()
@@ -61,9 +62,9 @@ export default function SignIn() {
     }
 
     return (
-        <div className="relative w-5/6 h-5/6 md:w-2/5 md:h-5/6 p-1 md:p-6 flex flex-col items-center justify-center bg-neutral-100 rounded-lg shadow-lg">
+        <div className="relative w-5/6 h-5/6 md:w-2/5 md:h-5/6 p-1 md:p-6 flex flex-col items-center justify-center bg-white rounded-lg shadow-lg">
             <div className="w-full flex flex-col items-center gap-x-3">
-                <Image src={"/"} alt="Viagens AM logo" width={120} height={200} />
+                <Image src={AMLogo} alt="AM Viajens logo" width={300} height={250} unoptimized/>
             </div>
 
             <form
@@ -74,7 +75,7 @@ export default function SignIn() {
                 }}
                 className="w-full flex flex-col items-center justify-center"
             >
-                <div className="space-y-6 mx-auto mt-6 w-2/3">
+                <div className="space-y-6 mx-auto w-2/3">
                     <form.Field
                         name="email"
                     >

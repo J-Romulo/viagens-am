@@ -78,7 +78,7 @@ export default function SignUp() {
   }
 
   return (
-      <div className="relative w-5/6 h-5/6 md:w-2/5 md:h-5/6 p-1 md:p-6 flex flex-col items-center justify-center bg-neutral-100 rounded-lg shadow-lg">
+      <div className="relative w-5/6 h-5/6 md:w-2/5 md:h-5/6 p-1 md:p-6 flex flex-col items-center justify-center bg-white rounded-lg shadow-lg">
           <div
             className="absolute top-7 left-7 rounded-full p-2 hover:text-primary-500 transition text-primary-400 cursor-pointer"
             onClick={() => router.push("/signIn")}
