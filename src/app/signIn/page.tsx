@@ -87,7 +87,6 @@ export default function SignIn() {
                                     value={field.state.value}
                                     onChange={(text) => field.handleChange(text)}
                                     placeholder="Digite sua email"
-                                    ringColor={field.state.meta.errors.length ? "accent-400" : "primary-400"}
                                     required={true}
                                 />
                             )
@@ -105,7 +104,6 @@ export default function SignIn() {
                                     value={field.state.value}
                                     onChange={(text) => field.handleChange(text)}
                                     placeholder="Digite sua senha"
-                                    ringColor={field.state.meta.errors.length ? "accent-400" : "primary-400"}
                                     required={true}
                                 />
                             )

@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
@@ -8,7 +10,6 @@ interface PasswordInputProps {
     onChange: (value: string) => void;
     placeholder?: string;
     required?: boolean;
-    ringColor?: string;
   }
   
 export function PasswordInput({
@@ -18,7 +19,6 @@ export function PasswordInput({
     onChange,
     placeholder,
     required = false,
-    ringColor = "primary-400",
 }: PasswordInputProps) {
     const [showPassword, setShowPassword] = useState(false);
 
@@ -27,7 +27,7 @@ export function PasswordInput({
     };
     
     return (
-      <div className="relative h-16">
+      <div className="relative">
         <label
           className={`block text-primary-400 font-medium mb-1`}
           htmlFor={id}
@@ -40,7 +40,7 @@ export function PasswordInput({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
-          className={`w-full p-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-${ringColor}`}
+          className={`w-full p-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-400`}
           required={required}
         />
         <button

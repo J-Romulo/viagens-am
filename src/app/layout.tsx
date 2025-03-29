@@ -17,7 +17,7 @@ export default function RootLayout({
         className="flex flex-col items-center justify-center"
       >
         {children}
-        <ToastContainer autoClose={8000} />
+        <ToastContainer autoClose={8000} draggable/>
       </body>
     </html>
   );

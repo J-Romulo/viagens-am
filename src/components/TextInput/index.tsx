@@ -6,7 +6,6 @@ interface TextInputProps {
     onChange: (value: string) => void;
     placeholder?: string;
     required?: boolean;
-    ringColor?: string;
 }
   
 export function TextInput({
@@ -17,7 +16,6 @@ export function TextInput({
     onChange,
     placeholder,
     required = false,
-    ringColor = 'primary-400',
 }: TextInputProps) {
     return (
       <div>
@@ -33,7 +31,7 @@ export function TextInput({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
-          className={`w-full p-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-${ringColor}`}
+          className={`w-full p-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-400`}
           required={required}
         />
       </div>
