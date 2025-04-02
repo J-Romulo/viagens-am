@@ -14,7 +14,7 @@ export default function DashboardLayout({
             <div className="flex align-items-center justify-center w-full h-full bg-primary-100">
                 <NavMenu />
 
-                <div className="flex w-full h-full">
+                <div className="flex w-full h-full p-2">
                     {children}
                 </div>
             </div>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ToastContainer } from "react-toastify";
+import ReactQueryProvider from "../utils/ReactQueryProvider";
 
 export const metadata: Metadata = {
   title: "Viagens AM",
@@ -16,7 +17,9 @@ export default function RootLayout({
       <body
         className="flex flex-col items-center justify-center"
       >
-        {children}
+        <ReactQueryProvider>
+          {children}
+        </ReactQueryProvider>
         <ToastContainer autoClose={8000} draggable/>
       </body>
     </html>

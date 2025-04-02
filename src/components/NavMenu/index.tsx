@@ -26,7 +26,7 @@ export function NavMenu() {
           </li>
           
           <li>
-            <Link href="/viagens" className={`flex items-center p-3 rounded-md ${isActive('/travels')}`}>
+            <Link href="/trips" className={`flex items-center p-3 rounded-md ${isActive('/trips')}`}>
               <FaPlane className="mr-3 text-xl" />
               <span className="font-medium">Viagens</span>
             </Link>
