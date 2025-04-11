@@ -20,7 +20,7 @@ export default function RootLayout({
         <ReactQueryProvider>
           {children}
         </ReactQueryProvider>
-        <ToastContainer autoClose={8000} draggable/>
+        <ToastContainer autoClose={8000} draggable style={{fontSize: '0.8rem'}}/>
       </body>
     </html>
   );

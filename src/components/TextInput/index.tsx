@@ -6,6 +6,9 @@ interface TextInputProps {
     onChange: (value: string) => void;
     placeholder?: string;
     required?: boolean;
+    className?: string;
+    errors?: unknown[];
+    maxLength?: number;
 }
   
 export function TextInput({
@@ -16,9 +19,12 @@ export function TextInput({
     onChange,
     placeholder,
     required = false,
+    className,
+    errors,
+    maxLength = 255,
 }: TextInputProps) {
     return (
-      <div>
+      <div className="w-full">
         <label
           className={`block text-primary-400 font-medium mb-1`}
           htmlFor={id}
@@ -31,9 +37,18 @@ export function TextInput({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
-          className={`w-full p-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-400`}
+          maxLength={maxLength}
+          className={`w-full p-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-400 ${errors && !!errors.length ? "focus:outline-none focus:ring-1 focus:ring-red-400" : ""} ${className}`}
           required={required}
         />
+        {errors && !!errors.length && (
+            <div className="text-red-500 text-sm mt-1">
+                {errors.map((error, index) => {
+                    const typedError = error as { message: string };
+                    return <span key={index}>{typedError.message}</span>;
+                })}
+            </div>
+        )}
       </div>
     );
 }

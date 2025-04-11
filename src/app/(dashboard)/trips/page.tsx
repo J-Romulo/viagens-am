@@ -68,7 +68,7 @@ export default function Trips() {
         
   if(tripsQuery.isLoading) {
     return (
-      <div className="flex flex-col w-full h-full items-center bg-white shadow-lg rounded-lg p-3">
+      <div className="flex flex-col w-full h-full items-center bg-white shadow-lg rounded-lg px-10 py-5">
           <PageTitle title="Viagens" />
           <Loader
               color={"#4f46e5"}
@@ -80,7 +80,7 @@ export default function Trips() {
   }
 
   return (
-      <div className="flex flex-col bg-white shadow-lg rounded-lg p-3 w-full h-full">
+      <div className="flex flex-col bg-white shadow-lg rounded-lg px-10 py-5 w-full h-full">
           <PageTitle title="Viagens" />
 
           <Table 

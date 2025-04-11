@@ -6,6 +6,7 @@ interface ButtonProps {
     onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
     disabled?: boolean;
     children?: React.ReactNode;
+    size?: "small" | "large";
 }
 
 export function Button({ 
@@ -13,12 +14,13 @@ export function Button({
     className = "", 
     onClick, 
     disabled = false, 
-    children = "Entrar" 
+    children = "Entrar",
+    size = "large"
 }: ButtonProps) {
     return (
         <button
             type={type}
-            className={`w-full bg-primary-400 text-white text-lg font-medium p-3 rounded-lg shadow-md hover:bg-primary-500 transition-all mt-8 ${disabled ? 'opacity-50 cursor-not-allowed' : ''} ${className}`}
+            className={`bg-primary-400 text-white text-lg font-medium p-3 rounded-lg shadow-md hover:bg-primary-500 transition-all mt-8 ${disabled ? 'opacity-50 cursor-not-allowed' : ''} ${className} ${size === "small" ? "w-fit min-w-30" : "w-full"}`}
             onClick={onClick}
             disabled={disabled}
         >

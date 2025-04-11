@@ -9,6 +9,8 @@ import { createColumnHelper } from "@tanstack/react-table";
 import { Table } from "../../../components/Table";
 import { Traveler } from "../../../@types/Traveler";
 import { getUserTravelers } from "../../../services/queries/Travelers";
+import { Button } from "../../../components/Button";
+import { useRouter } from "next/navigation";
 
 const columnHelper = createColumnHelper<Traveler>()
 
@@ -37,6 +39,8 @@ const columns = [
 ]
 
 export default function Travelers() {
+  const router = useRouter();
+  
   const travelersQuery = useQuery<Traveler[]>({
     queryKey: ['travelers'],
     queryFn: getUserTravelers,
@@ -51,8 +55,8 @@ export default function Travelers() {
         
   if(travelersQuery.isLoading) {
     return (
-      <div className="flex flex-col w-full h-full items-center bg-white shadow-lg rounded-lg p-3">
-          <PageTitle title="Viagens" />
+      <div className="flex flex-col w-full h-full items-center bg-white shadow-lg rounded-lg px-10 py-5">
+          <PageTitle title="Viajantes" />
           <Loader
               color={"#4f46e5"}
               loading={true}
@@ -63,13 +67,22 @@ export default function Travelers() {
   }
 
   return (
-      <div className="flex flex-col bg-white shadow-lg rounded-lg p-3 w-full h-full">
-          <PageTitle title="Viagens" />
+      <div className="flex flex-col bg-white shadow-lg rounded-lg px-10 py-5 w-full h-full">
+          <PageTitle title="Viajantes" />
 
           <Table 
             data={travelersQuery.data}
             columns={columns}
           />
+
+          <Button
+            onClick={() => {
+              router.push('/travelers/create');
+            }}
+            size="small"
+          >
+            Adicionar viajante
+          </Button>
       </div>
   )
 }
