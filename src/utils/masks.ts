@@ -10,3 +10,18 @@ export function cpfMask(value: string): string {
 export function parseMaskedCPFToRaw(maskedCPF: string) {
 	return maskedCPF.replaceAll('.', '').replaceAll('-', '');
 }
+
+export const moneyMask = (value: string) => {
+	value = value.replaceAll('.', '').replace(',', '').replace(/\D/g, '');
+
+	const options = { minimumFractionDigits: 2 };
+	const result = new Intl.NumberFormat('pt-BR', options).format(
+		isNaN(parseFloat(value)) ? 0 : parseFloat(value) / 100
+	);
+
+	return result;
+};
+
+export function parseCurrencyStrToNumber(currencyStr: string) {
+	return Number(currencyStr.replaceAll('.', '').replace(',', '.'));
+}
