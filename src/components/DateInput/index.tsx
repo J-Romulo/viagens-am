@@ -1,9 +1,14 @@
-interface DateInputProps {
+import { InputHTMLAttributes } from "react";
+
+interface DateInputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange'> {
     id: string;
     label: string;
     value: Date;
+    type?: "date" | "datetime-local";
     onChange: (value: Date) => void;
     required?: boolean;
+    className?: string;
+    errors?: unknown[];
 }
   
 export function DateInput({
@@ -12,6 +17,10 @@ export function DateInput({
     value,
     onChange,
     required = false,
+    type = "date",
+    className,
+    errors,
+    ...rest
 }: DateInputProps) {
     const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         // Only update if the input has a valid date value
@@ -23,8 +32,23 @@ export function DateInput({
         }
     };
 
+    const formatValue = (date: Date) => {
+        if (type === "datetime-local") {
+            // Get the local date and time components
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const hours = String(date.getHours()).padStart(2, '0');
+            const minutes = String(date.getMinutes()).padStart(2, '0');
+            
+            return `${year}-${month}-${day}T${hours}:${minutes}`;
+        }
+        // For date type, we can still use the ISO string since we only care about the date part
+        return date.toISOString().split('T')[0];
+    };
+
     return (
-      <div>
+      <div className="w-full">
         <label
           className={`block text-primary-400 font-medium mb-1`}
           htmlFor={id}
@@ -32,16 +56,24 @@ export function DateInput({
           {label}
         </label>
         <input
-            type="date"
+            type={type}
             id={id}
             name={id}
-            value={value.toISOString().split('T')[0]}
+            value={formatValue(value)}
             onChange={handleDateChange}
-            min="1900-01-01"
-            max={new Date().toISOString().split('T')[0]}
+            {...rest}
             required={required}
-            className={`w-50 p-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-400`}
+            className={`w-50 p-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-400 ${errors && !!errors.length ? "focus:outline-none focus:ring-1 focus:ring-red-400" : ""} ${className}`}
         />
+
+        {errors && !!errors.length && (
+            <div className="text-red-500 text-sm mt-1">
+                {errors.map((error, index) => {
+                    const typedError = error as { message: string };
+                    return <span key={index}>{typedError.message}</span>;
+                })}
+            </div>
+        )}
       </div>
     );
 }
