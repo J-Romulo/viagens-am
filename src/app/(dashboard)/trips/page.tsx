@@ -9,6 +9,8 @@ import { toast } from "react-toastify";
 import { useEffect } from "react";
 import { createColumnHelper } from "@tanstack/react-table";
 import { Table } from "../../../components/Table";
+import { Button } from "../../../components/Button";
+import { useRouter } from "next/navigation";
 
 const columnHelper = createColumnHelper<Trip>()
 
@@ -54,6 +56,7 @@ const columns = [
 ]
 
 export default function Trips() {
+  const router = useRouter();
   const tripsQuery = useQuery<Trip[]>({
     queryKey: ['trips'],
     queryFn: getUserTrips,
@@ -87,6 +90,15 @@ export default function Trips() {
             data={tripsQuery.data}
             columns={columns}
           />
+
+          <Button
+            onClick={() => {
+              router.push('/trips/create');
+            }}
+            size="small"
+          >
+            Adicionar viagem
+          </Button>
       </div>
   )
 }
