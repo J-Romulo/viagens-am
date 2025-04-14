@@ -9,6 +9,7 @@ interface TextInputProps {
     className?: string;
     errors?: unknown[];
     maxLength?: number;
+    disabled?: boolean;
 }
   
 export function TextInput({
@@ -22,6 +23,7 @@ export function TextInput({
     className,
     errors,
     maxLength = 255,
+    disabled = false,
 }: TextInputProps) {
     return (
       <div className="w-full">
@@ -38,8 +40,9 @@ export function TextInput({
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           maxLength={maxLength}
-          className={`w-full p-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-400 ${errors && !!errors.length ? "focus:outline-none focus:ring-1 focus:ring-red-400" : ""} ${className}`}
+          className={`w-full p-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-400 ${errors && !!errors.length ? "focus:outline-none focus:ring-1 focus:ring-red-400" : ""} ${disabled ? "bg-neutral-100 cursor-not-allowed" : ""} ${className}`}
           required={required}
+          disabled={disabled}
         />
         {errors && !!errors.length && (
             <div className="text-red-500 text-sm mt-1">

@@ -96,6 +96,7 @@ export default function Trips() {
               router.push('/trips/create');
             }}
             size="small"
+            className="mt-8"
           >
             Adicionar viagem
           </Button>

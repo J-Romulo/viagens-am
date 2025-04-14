@@ -271,6 +271,7 @@ export default function CreateTrip() {
                                 type="submit"
                                 disabled={!canSubmit}
                                 size="small"
+                                className="mt-8"
                             >
                                 {isSubmitting ?
                                     <Loader

@@ -47,7 +47,7 @@ export function Table<T>(props: TableProps<T>) {
                     {row.getVisibleCells().map(cell => (
                     <td 
                         key={cell.id} 
-                        className="py-3 px-4 border-b border-neutral-300 text-neutral-500"
+                        className={`py-3 px-4 border-b border-neutral-300 text-neutral-500 w-${cell.column.columnDef.size}`}
                     >
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </td>

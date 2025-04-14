@@ -13,6 +13,7 @@ import { Button } from "../../../../components/Button";
 import Loader from "react-spinners/ClipLoader";
 import { useRouter } from "next/navigation";
 import { cpfMask, parseMaskedCPFToRaw } from "../../../../utils/masks";
+import { IoIosArrowBack } from "react-icons/io";
 
 const createTravelerSchema = z.object({
     full_name: z.string()
@@ -75,7 +76,17 @@ export default function CreateTraveler() {
     
     return (
         <div className="flex flex-col bg-white shadow-lg rounded-lg px-10 py-5 w-full h-full">
-            <PageTitle title="Criar viajante" />
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-4">
+                  <div
+                      className="rounded-full p-2 hover:text-primary-500 transition text-primary-400 cursor-pointer"
+                      onClick={() => router.back()}
+                  >
+                      <IoIosArrowBack size={30} />
+                  </div>
+                  <PageTitle title="Criar viajante" />
+              </div>
+            </div>
 
             <form                 
                 onSubmit={(e) => {
@@ -172,6 +183,7 @@ export default function CreateTraveler() {
                                 type="submit"
                                 disabled={!canSubmit}
                                 size="small"
+                                className="mt-8"
                             >
                                 {isSubmitting ?
                                     <Loader
