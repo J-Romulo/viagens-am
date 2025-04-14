@@ -62,16 +62,12 @@ export default function CreateTraveler() {
     });
 
     async function handleSubmit(data: {full_name: string; birth_date: Date; cpf: string; rg: string; }) {
-        try {
-            await createTravelerMutation.mutateAsync({
-                full_name: data.full_name,
-                birth_date: data.birth_date,
-                cpf: data.cpf,
-                rg: data.rg
-            });
-        } catch (error) {
-            console.error(error);
-        }
+        await createTravelerMutation.mutateAsync({
+            full_name: data.full_name,
+            birth_date: data.birth_date,
+            cpf: data.cpf,
+            rg: data.rg
+        });
     }
     
     return (

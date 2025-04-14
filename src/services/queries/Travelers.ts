@@ -25,3 +25,12 @@ export async function createTraveler(traveler: CreateTraveler): Promise<Traveler
 	);
 	return data;
 }
+
+type UpdateTraveler = Partial<Omit<Traveler, "_id" | "user_id" | "created_at" | "updated_at">>;
+export async function updateTraveler(id: string, traveler: UpdateTraveler): Promise<Traveler> {
+	const { data } = await api.patch(
+		`/clients/${id}`,
+		traveler
+	);
+	return data;
+}
