@@ -11,49 +11,9 @@ import { createColumnHelper } from "@tanstack/react-table";
 import { Table } from "../../../components/Table";
 import { Button } from "../../../components/Button";
 import { useRouter } from "next/navigation";
+import { IoIosCreate } from "react-icons/io";
 
 const columnHelper = createColumnHelper<Trip>()
-
-const columns = [
-  columnHelper.accessor('city', {
-    header: "Cidade",
-    cell: info => info.getValue(),
-  }),
-  columnHelper.accessor('uf', {
-    header: "Estado",
-    cell: info => info.getValue(),
-  }),
-  columnHelper.accessor('hotel', {
-    header: "Hotel",
-    cell: info => info.getValue(),
-  }),
-  columnHelper.accessor('start_date', {
-    header: "Ida",
-    cell: (info) => Intl.DateTimeFormat('pt-BR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false, // 24-hour format
-    })
-      .format(new Date(info.getValue()))
-      .replace(',', ' às'),
-  }),
-  columnHelper.accessor('finish_date', {
-    header: "Volta",
-    cell: (info) => Intl.DateTimeFormat('pt-BR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false, // 24-hour format
-    })
-      .format(new Date(info.getValue()))
-      .replace(',', ' às'),
-  }),
-]
 
 export default function Trips() {
   const router = useRouter();
@@ -82,9 +42,68 @@ export default function Trips() {
     )
   }
 
+  const columns = [
+    columnHelper.accessor('city', {
+      header: "Cidade",
+      cell: info => info.getValue(),
+    }),
+    columnHelper.accessor('uf', {
+      header: "Estado",
+      cell: info => info.getValue(),
+    }),
+    columnHelper.accessor('hotel', {
+      header: "Hotel",
+      cell: info => info.getValue(),
+    }),
+    columnHelper.accessor('start_date', {
+      header: "Ida",
+      cell: (info) => Intl.DateTimeFormat('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false, // 24-hour format
+      })
+        .format(new Date(info.getValue()))
+        .replace(',', ' às'),
+    }),
+    columnHelper.accessor('finish_date', {
+      header: "Volta",
+      cell: (info) => Intl.DateTimeFormat('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false, // 24-hour format
+      })
+        .format(new Date(info.getValue()))
+        .replace(',', ' às'),
+    }),
+    columnHelper.display({
+      id: 'actions',
+      header: "Ações",
+      size: 30,
+      cell: ({ row }) => (
+        <Button
+          onClick={() => {
+            router.push(`/trips/${row.original._id}`);
+          }}
+          size="small"
+          className="flex items-center justify-center rounded-full"
+        >
+          <IoIosCreate size={16} />
+        </Button>
+      ),
+    }),
+  ]
+
   return (
       <div className="flex flex-col bg-white shadow-lg rounded-lg px-10 py-5 w-full h-full">
-          <PageTitle title="Viagens" />
+          <div className="flex items-center justify-between mb-6">
+            <PageTitle title="Viagens" />
+          </div>
 
           <Table 
             data={tripsQuery.data}

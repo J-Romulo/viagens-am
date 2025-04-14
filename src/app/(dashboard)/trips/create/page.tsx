@@ -13,6 +13,7 @@ import { Button } from "../../../../components/Button";
 import Loader from "react-spinners/ClipLoader";
 import { useRouter } from "next/navigation";
 import { CurrencyInput } from "../../../../components/CurrencyInput";
+import { IoIosArrowBack } from "react-icons/io";
 
 const createTripSchema = z.object({
     city: z.string()
@@ -105,7 +106,17 @@ export default function CreateTrip() {
     
     return (
         <div className="flex flex-col bg-white shadow-lg rounded-lg px-10 py-5 w-full h-full">
-            <PageTitle title="Criar viagem" />
+            <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-4">
+                  <div
+                      className="rounded-full p-2 hover:text-primary-500 transition text-primary-400 cursor-pointer"
+                      onClick={() => router.back()}
+                  >
+                      <IoIosArrowBack size={30} />
+                  </div>
+                  <PageTitle title="Criar viagem" />
+              </div>
+            </div>
 
             <form                 
                 onSubmit={(e) => {
