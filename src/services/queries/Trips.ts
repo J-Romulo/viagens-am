@@ -35,3 +35,11 @@ export async function updateTrip(id: string, trip: UpdateTrip): Promise<Trip> {
 	);
 	return data;
 }
+
+export async function updateTripClients(id: string, clients: string[]): Promise<Trip> {
+	const { data } = await api.put(
+		`/trips/${id}`,
+		{ clients }
+	);
+	return data;
+}

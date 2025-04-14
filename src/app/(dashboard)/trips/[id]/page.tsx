@@ -16,6 +16,7 @@ import { Button } from "../../../../components/Button";
 import { z } from "zod";
 import { useForm } from "@tanstack/react-form";
 import { isAxiosError } from "axios";
+import { AddTravelers } from "../AddTravelers";
 
 const tripSchema = z.object({
   city: z.string()
@@ -313,19 +314,25 @@ export default function TripDetails({ params }: { params: Promise<{ id: string }
               </form.Field>
             </div>
 
-            {tripQuery.data.clients && tripQuery.data.clients.length > 0 && (
               <div className="w-full">
-                <h3 className="text-lg font-semibold mb-4">Clientes</h3>
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-semibold mb-4">Clientes</h3>
+                  <AddTravelers 
+                    tripId={id}
+                    currentClients={tripQuery.data.clients}
+                  />
+                </div>
                 <div className="space-y-4">
-                  {tripQuery.data.clients.map((client) => (
-                    <div key={client._id} className="border rounded-lg p-4">
-                      <p className="font-medium">{client.full_name}</p>
-                      <p className="text-sm text-gray-600">CPF: {client.cpf}</p>
-                    </div>
-                  ))}
+                  {tripQuery.data.clients && tripQuery.data.clients.length > 0 && (
+                    tripQuery.data.clients.map((client) => (
+                      <div key={client._id} className="border rounded-lg p-4">
+                        <p className="font-medium">{client.full_name}</p>
+                        <p className="text-sm text-gray-600">CPF: {client.cpf}</p>
+                      </div>
+                    ))
+                  )}
                 </div>
               </div>
-            )}
           </form>
       </div>
   )
