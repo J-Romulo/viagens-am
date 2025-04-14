@@ -66,7 +66,7 @@ export function DateInput({
             {...rest}
             required={required}
             disabled={disabled}
-            className={`w-50 p-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-400 ${errors && !!errors.length ? "focus:outline-none focus:ring-1 focus:ring-red-400" : ""} ${disabled ? "bg-neutral-100 cursor-not-allowed" : ""} ${className}`}
+            className={`w-50 p-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-400 ${errors && !!errors.length ? "focus:outline-none focus:ring-1 focus:ring-red-400" : ""} ${disabled ? "bg-neutral-100" : ""} ${className}`}
         />
 
         {errors && !!errors.length && (

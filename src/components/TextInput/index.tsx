@@ -40,7 +40,7 @@ export function TextInput({
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           maxLength={maxLength}
-          className={`w-full p-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-400 ${errors && !!errors.length ? "focus:outline-none focus:ring-1 focus:ring-red-400" : ""} ${disabled ? "bg-neutral-100 cursor-not-allowed" : ""} ${className}`}
+          className={`w-full p-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-400 ${errors && !!errors.length ? "focus:outline-none focus:ring-1 focus:ring-red-400" : ""} ${disabled ? "bg-neutral-100 " : ""} ${className}`}
           required={required}
           disabled={disabled}
         />

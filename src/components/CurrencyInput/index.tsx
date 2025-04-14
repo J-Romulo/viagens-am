@@ -5,6 +5,7 @@ interface CurrencyInputProps {
     label: string;
     value: number | string;
     onChange: (value: { value: string, floatValue: number }) => void;
+    disabled?: boolean;
 }
   
 export function CurrencyInput({
@@ -12,6 +13,7 @@ export function CurrencyInput({
     label,
     value,
     onChange,
+    disabled = false,
     ...rest
 }: CurrencyInputProps) {
     if (typeof value === 'string') {
@@ -40,7 +42,8 @@ export function CurrencyInput({
                 id={id}
                 value={moneyMask(value.toFixed(2))}
                 onChange={(e) => handleChangeValue(e.target.value)}
-                className={`w-40 p-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-400`}
+                className={`w-40 p-3 border border-neutral-300 rounded-lg focus:outline-none focus:ring-1 focus:ring-primary-400 ${disabled ? "bg-neutral-100" : ""}`}
+                disabled={disabled}
             />
         </div>
       </div>

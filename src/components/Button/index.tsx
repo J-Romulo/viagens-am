@@ -20,7 +20,7 @@ export function Button({
     return (
         <button
             type={type}
-            className={`bg-primary-400 text-white text-lg font-medium p-3 rounded-lg shadow-md hover:bg-primary-500 transition-all ${disabled ? 'opacity-50 cursor-not-allowed' : ''} ${className} ${size === "small" ? "w-fit" : "w-full"}`}
+            className={`bg-primary-400 text-white text-lg font-medium p-3 rounded-lg shadow-md hover:bg-primary-500 transition-all ${disabled ? 'opacity-50 ' : ''} ${className} ${size === "small" ? "w-fit" : "w-full"}`}
             onClick={onClick}
             disabled={disabled}
         >
