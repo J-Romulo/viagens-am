@@ -67,17 +67,16 @@ export function AddTravelers({ tripId, currentClients = [] }: AddTravelersProps)
 
     return (
         <>
-            <Button
+            <button
                 onClick={() => setIsOpen(true)}
-                size="small"
-                type="button"
+                className="text-primary-400 hover:text-primary-500 hover:underline transition"
             >
-                Adicionar viajantes
-            </Button>
+                Atualizar viajantes
+            </button>
             <CustomModal
                 isOpen={isOpen}
                 onRequestClose={() => setIsOpen(false)}
-                headerTitle="Adicionar Clientes"
+                headerTitle="Atualizar lista de viajantes"
             >
                 <div className="flex flex-col gap-4">
                     {travelersQuery.isLoading ? (
@@ -90,19 +89,19 @@ export function AddTravelers({ tripId, currentClients = [] }: AddTravelersProps)
                         </div>
                     ) : (
                         <div className="flex flex-col gap-4">
-                            <div className="max-h-96 overflow-y-auto">
+                            <div className="max-h-96 overflow-y-auto space-y-2">
                                 {travelersQuery.data?.map((client) => (
                                     <div
                                         key={client._id}
-                                        className={`p-4 border rounded-lg cursor-pointer ${
+                                        className={`p-3 rounded-lg border cursor-pointer transition ${
                                             selectedClients.some(c => c._id === client._id)
                                                 ? 'border-primary-500 bg-primary-50'
                                                 : 'border-gray-200 hover:border-primary-300'
                                         }`}
                                         onClick={() => handleClientSelect(client)}
                                     >
-                                        <div className="font-medium">{client.full_name}</div>
-                                        <div className="text-sm text-gray-500">{client.cpf}</div>
+                                        <p className="font-medium text-primary-500">{client.full_name}</p>
+                                        <p className="text-sm text-gray-600">CPF: {client.cpf}</p>
                                     </div>
                                 ))}
                             </div>

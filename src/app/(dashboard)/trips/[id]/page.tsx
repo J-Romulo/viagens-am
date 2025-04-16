@@ -17,6 +17,7 @@ import { z } from "zod";
 import { useForm } from "@tanstack/react-form";
 import { isAxiosError } from "axios";
 import { AddTravelers } from "../AddTravelers";
+import { IoPerson } from "react-icons/io5";
 
 const tripSchema = z.object({
   city: z.string()
@@ -128,7 +129,7 @@ export default function TripDetails({ params }: { params: Promise<{ id: string }
   }
 
   return (
-      <div className="flex flex-col bg-white shadow-lg rounded-lg px-10 py-5 w-full h-full">
+      <div className="flex flex-col bg-white shadow-lg rounded-lg px-10 py-5 pb-15 w-full h-full overflow-y-auto">
           <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-4">
                   <div
@@ -314,26 +315,36 @@ export default function TripDetails({ params }: { params: Promise<{ id: string }
               </form.Field>
             </div>
 
-              <div className="w-full">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold mb-4">Clientes</h3>
-                  <AddTravelers 
-                    tripId={id}
-                    currentClients={tripQuery.data.clients}
-                  />
-                </div>
-                <div className="space-y-4">
-                  {tripQuery.data.clients && tripQuery.data.clients.length > 0 && (
-                    tripQuery.data.clients.map((client) => (
-                      <div key={client._id} className="border rounded-lg p-4">
-                        <p className="font-medium">{client.full_name}</p>
+          </form>
+          <div className="w-full mt-20">
+            <div className="flex items-center justify-between px-10">
+              <h3 className="text-lg text-primary-500 font-semibold mb-4">Viajantes ({tripQuery.data.clients?.length || 0})</h3>
+              <AddTravelers 
+                tripId={id}
+                currentClients={tripQuery.data.clients}
+              />
+            </div>
+            <div className="flex flex-col items-center gap-y-2">
+              {tripQuery.data.clients && tripQuery.data.clients.length > 0 && (
+                tripQuery.data.clients.map((client) => (
+                  <div key={client._id.toString()} className="p-3 rounded-lg border border-gray-200 w-2/3 flex flex-row items-center justify-between">
+                      <div className="flex flex-col">
+                        <p className="font-medium text-primary-500">{client.full_name}</p>
                         <p className="text-sm text-gray-600">CPF: {client.cpf}</p>
                       </div>
-                    ))
-                  )}
-                </div>
-              </div>
-          </form>
+
+                      <button
+                        onClick={() => router.push(`/travelers/${client._id}`)}
+                        className="text-primary-400 hover:text-primary-500 transition rounded-full p-2 cursor-pointer hover:bg-gray-100"
+                        title="Ver detalhes do cliente"
+                      >
+                        <IoPerson size={20} />
+                      </button>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
       </div>
   )
 }
