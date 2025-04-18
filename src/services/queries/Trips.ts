@@ -1,5 +1,4 @@
 import { Trip } from "../../@types/Trip";
-import { Traveler } from "../../@types/Traveler";
 import api from "../api";
 
 export async function getUserTrips(): Promise<Trip[]> {

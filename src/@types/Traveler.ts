@@ -1,3 +1,5 @@
+import { Trip } from "./Trip";
+
 export type Traveler = {
     _id: string;
     user_id: string;
@@ -7,6 +9,7 @@ export type Traveler = {
     birth_date: Date;
     email?: string;
     phone?: string;
+    trips?: Trip[];
     created_at: Date;
     updated_at: Date;
 }

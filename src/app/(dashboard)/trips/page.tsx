@@ -100,7 +100,7 @@ export default function Trips() {
   ]
 
   return (
-      <div className="flex flex-col bg-white shadow-lg rounded-lg px-10 py-5 w-full h-full">
+      <div className="flex flex-col bg-white shadow-lg rounded-lg px-10 py-5 w-full h-full overflow-y-auto">
           <div className="flex items-center justify-between mb-6">
             <PageTitle title="Viagens" />
           </div>

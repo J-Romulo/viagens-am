@@ -34,3 +34,11 @@ export async function updateTraveler(id: string, traveler: UpdateTraveler): Prom
 	);
 	return data;
 }
+
+export async function updateTravelerTrips(id: string, trips: string[]): Promise<Traveler> {
+	const { data } = await api.put(
+		`/clients/${id}`,
+		{ trips }
+	);
+	return data;
+}

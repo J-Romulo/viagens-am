@@ -84,8 +84,10 @@ export default function Travelers() {
   ]
 
   return (
-      <div className="flex flex-col bg-white shadow-lg rounded-lg px-10 py-5 w-full h-full">
-          <PageTitle title="Viajantes" />
+      <div className="flex flex-col bg-white shadow-lg rounded-lg px-10 py-5 w-full h-full overflow-y-auto">
+          <div className="flex items-center justify-between mb-6">
+            <PageTitle title="Viajantes" />
+          </div>
 
           <Table 
             data={travelersQuery.data}

@@ -1,40 +1,36 @@
-import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getUserTravelers, updateTravelerTrips } from "../../../../services/queries/Travelers";
-import { Button } from "../../../../components/Button";
-import { toast } from "react-toastify";
+import { useQueryClient, useQuery, useMutation } from "@tanstack/react-query";
 import { isAxiosError } from "axios";
-import Loader from "react-spinners/ClipLoader";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import { Trip } from "../../../../@types/Trip";
+import { Button } from "../../../../components/Button";
 import { CustomModal } from "../../../../components/Modal";
+import { getUserTrips } from "../../../../services/queries/Trips";
+import Loader from "react-spinners/ClipLoader";
+import { updateTravelerTrips } from "../../../../services/queries/Travelers";
 
-interface Client {
-    _id: string;
-    full_name: string;
-    cpf: string;
+interface AddTripsProps {
+    clientId: string;
+    currentTrips?: Trip[];
 }
 
-interface AddTravelersProps {
-    tripId: string;
-    currentClients?: Client[];
-}
-
-export function AddTravelers({ tripId, currentClients = [] }: AddTravelersProps) {
+export function AddTrips({ clientId, currentTrips = [] }: AddTripsProps) {
     const [isOpen, setIsOpen] = useState(false);
-    const [selectedClients, setSelectedClients] = useState<Client[]>(currentClients);
+    const [selectedTrips, setSelectedTrips] = useState<Trip[]>(currentTrips);
     const queryClient = useQueryClient();
 
-    const travelersQuery = useQuery({
-        queryKey: ['travelers', tripId],
-        queryFn: getUserTravelers,
+    const tripsQuery = useQuery({
+        queryKey: ['trips', clientId],
+        queryFn: getUserTrips,
         refetchOnWindowFocus: false
     });
 
-    const updateTripClientsMutation = useMutation({
-        mutationFn: ({ id, clients }: { id: string, clients: string[] }) => 
-            updateTravelerTrips(id, clients),
+    const updateTravelerTripsMutation = useMutation({
+        mutationFn: ({ id, trips }: { id: string, trips: string[] }) => 
+            updateTravelerTrips(id, trips),
         onSuccess: () => {
-            toast.success("Clientes adicionados com sucesso.");
-            queryClient.invalidateQueries({ queryKey: ['trip', tripId] });
+            toast.success("Viagens adicionadas com sucesso.");
+            queryClient.invalidateQueries({ queryKey: ['traveler', clientId] });
             setIsOpen(false);
         },
         onError: (error) => {
@@ -43,24 +39,24 @@ export function AddTravelers({ tripId, currentClients = [] }: AddTravelersProps)
                 return;
             }
 
-            toast.error("Ocorreu um erro ao adicionar os clientes. Tente novamente em instantes.");
+            toast.error("Ocorreu um erro ao adicionar as viagens. Tente novamente em instantes.");
         }
     });
 
-    const handleClientSelect = (client: Client) => {
-        setSelectedClients(prev => {
-            const isSelected = prev.some(c => c._id === client._id);
+    const handleTripSelect = (trip: Trip) => {
+        setSelectedTrips(prev => {
+            const isSelected = prev.some(c => c._id === trip._id);
             if (isSelected) {
-                return prev.filter(c => c._id !== client._id);
+                return prev.filter(c => c._id !== trip._id);
             }
-            return [...prev, client];
+            return [...prev, trip];
         });
     };
 
     const handleSubmit = async () => {
-        await updateTripClientsMutation.mutateAsync({
-            id: tripId,
-            clients: selectedClients.map(client => client._id)
+        await updateTravelerTripsMutation.mutateAsync({
+            id: clientId,
+            trips: selectedTrips.map(trip => trip._id)
         });
     };
 
@@ -70,37 +66,46 @@ export function AddTravelers({ tripId, currentClients = [] }: AddTravelersProps)
                 onClick={() => setIsOpen(true)}
                 className="text-primary-400 hover:text-primary-500 hover:underline transition"
             >
-                Atualizar viajantes
+                Atualizar viagens
             </button>
             <CustomModal
                 isOpen={isOpen}
                 onRequestClose={() => setIsOpen(false)}
-                headerTitle="Atualizar lista de viajantes"
+                headerTitle="Atualizar lista de viagens"
             >
                 <div className="flex flex-col gap-4">
-                    {travelersQuery.isLoading ? (
+                    {tripsQuery.isLoading ? (
                         <div className="flex justify-center">
                             <Loader color="#4f46e5" loading={true} size={40} />
                         </div>
-                    ) : travelersQuery.isError ? (
+                    ) : tripsQuery.isError ? (
                         <div className="text-red-500 text-center">
-                            Ocorreu um erro ao carregar os clientes. Tente novamente em instantes.
+                            Ocorreu um erro ao carregar as viagens. Tente novamente em instantes.
                         </div>
                     ) : (
                         <div className="flex flex-col gap-4">
                             <div className="max-h-96 overflow-y-auto space-y-2">
-                                {travelersQuery.data?.map((client) => (
+                                {tripsQuery.data?.map((trip) => (
                                     <div
-                                        key={client._id}
+                                        key={trip._id}
                                         className={`p-3 rounded-lg border cursor-pointer transition ${
-                                            selectedClients.some(c => c._id === client._id)
+                                            selectedTrips.some(c => c._id === trip._id)
                                                 ? 'border-primary-500 bg-primary-50'
                                                 : 'border-gray-200 hover:border-primary-300'
                                         }`}
-                                        onClick={() => handleClientSelect(client)}
+                                        onClick={() => handleTripSelect(trip)}
                                     >
-                                        <p className="font-medium text-primary-500">{client.full_name}</p>
-                                        <p className="text-sm text-gray-600">CPF: {client.cpf}</p>
+                                        <p className="font-medium text-primary-500">{trip.city} - {trip.uf}</p>
+                                        <p className="text-sm text-gray-600">
+                                            {
+                                                Intl.DateTimeFormat('pt-BR', {
+                                                        day: '2-digit',
+                                                        month: '2-digit',
+                                                        year: 'numeric',
+                                                    }
+                                                ).format(new Date(trip.start_date))
+                                            }
+                                        </p>
                                     </div>
                                 ))}
                             </div>
@@ -115,9 +120,9 @@ export function AddTravelers({ tripId, currentClients = [] }: AddTravelersProps)
                                 <Button
                                     onClick={handleSubmit}
                                     size="small"
-                                    disabled={updateTripClientsMutation.isPending}
+                                    disabled={updateTravelerTripsMutation.isPending}
                                 >
-                                    {updateTripClientsMutation.isPending ? (
+                                    {updateTravelerTripsMutation.isPending ? (
                                         <Loader color="#FFF" loading={true} size={20} />
                                     ) : (
                                         'Salvar'
@@ -131,4 +136,3 @@ export function AddTravelers({ tripId, currentClients = [] }: AddTravelersProps)
         </>
     );
 }
-

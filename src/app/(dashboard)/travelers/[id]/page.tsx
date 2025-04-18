@@ -16,6 +16,8 @@ import { z } from "zod";
 import { useForm } from "@tanstack/react-form";
 import { cpfMask, parseMaskedCPFToRaw } from "../../../../utils/masks";
 import { isAxiosError } from "axios";
+import { AddTrips } from "../AddTrips";
+import { CgDetailsLess } from "react-icons/cg";
 
 const travelerSchema = z.object({
   full_name: z.string()
@@ -107,7 +109,7 @@ export default function TravelerDetails({ params }: { params: Promise<{ id: stri
   }
 
   return (
-      <div className="flex flex-col bg-white shadow-lg rounded-lg px-10 py-5 w-full h-full">
+      <div className="flex flex-col bg-white shadow-lg rounded-lg px-10 py-5 w-full h-full overflow-y-auto">
           <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-4">
                   <div
@@ -237,6 +239,44 @@ export default function TravelerDetails({ params }: { params: Promise<{ id: stri
               </form.Field>
             </div>
           </form>
+          <div className="w-full mt-20">
+            <div className="flex items-center justify-between px-10">
+              <h3 className="text-lg text-primary-500 font-semibold mb-4">Viajantes ({travelerQuery.data.trips?.length || 0})</h3>
+              <AddTrips 
+                clientId={id}
+                currentTrips={travelerQuery.data.trips}
+              />
+            </div>
+            <div className="flex flex-col items-center gap-y-2">
+              {travelerQuery.data.trips && travelerQuery.data.trips.length > 0 && (
+                travelerQuery.data.trips.map((trip) => (
+                  <div key={trip._id.toString()} className="p-3 rounded-lg border border-gray-200 w-2/3 flex flex-row items-center justify-between">
+                      <div className="flex flex-col">
+                        <p className="font-medium text-primary-500">{trip.city} - {trip.uf}</p>
+                        <p className="text-sm text-gray-600">
+                          {
+                              Intl.DateTimeFormat('pt-BR', {
+                                      day: '2-digit',
+                                      month: '2-digit',
+                                      year: 'numeric',
+                                  }
+                              ).format(new Date(trip.start_date))
+                          }
+                        </p>
+                      </div>
+
+                      <button
+                        onClick={() => router.push(`/trips/${trip._id}`)}
+                        className="text-primary-400 hover:text-primary-500 transition rounded-full p-2 cursor-pointer hover:bg-gray-100"
+                        title="Ver detalhes da viagem"
+                      >
+                        <CgDetailsLess size={20} />
+                      </button>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
       </div>
   )
 }
