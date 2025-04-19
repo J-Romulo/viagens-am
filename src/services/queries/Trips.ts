@@ -1,4 +1,4 @@
-import { Trip } from "../../@types/Trip";
+import { Room, Trip } from "../../@types/Trip";
 import api from "../api";
 
 export async function getUserTrips(): Promise<Trip[]> {
@@ -36,10 +36,14 @@ export async function updateTrip(id: string, trip: UpdateTrip): Promise<Trip> {
 	return data;
 }
 
-export async function updateTripClients(id: string, clients: string[]): Promise<Trip> {
+export async function updateTripClients(id: string, rooms: {
+	doubleCouple: Room[],
+	doubleSingle: Room[],
+	triple: Room[]
+}): Promise<Trip> {
 	const { data } = await api.put(
 		`/trips/${id}`,
-		{ clients }
+		{ rooms }
 	);
 	return data;
 }

@@ -37,9 +37,10 @@ export function CustomModal({
                     right: 'auto',
                     bottom: 'auto',
                     transform: 'translate(-50%, -50%)',
-                    width: '100%',
-                    maxWidth: '28rem',
                     padding: '1.5rem',
+                    minWidth: '26rem',
+                    width: 'fit-content',
+                    maxWidth: '70rem',
                     borderRadius: '0.5rem',
                     border: 'none',
                     boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'

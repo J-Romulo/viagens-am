@@ -11,6 +11,16 @@ export type Trip = {
     individual_price: number;
     expected_clients?: number;
     clients?: Traveler[];
+    rooms: {
+        doubleCouple: Room[],
+        doubleSingle: Room[],
+        triple: Room[]
+    };
     created_at: Date;
     updated_at: Date;
+}
+
+export interface Room {
+    id: string;
+    travelers: Traveler[];
 }
