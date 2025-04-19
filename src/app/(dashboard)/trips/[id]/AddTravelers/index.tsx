@@ -82,6 +82,19 @@ export function AddTravelers({ tripId, currentRooms }: AddTravelersProps) {
         setShowTravelerSelector(true);
     };
 
+    const isRoomFull = (room: Room) => {
+        // Check max travelers per room type
+        const maxTravelers = 
+        activeRoomType === 'triple' ? 3 : 
+        activeRoomType === 'doubleCouple' || activeRoomType === 'doubleSingle' ? 2 : 0;
+        
+        if (room.travelers.length >= maxTravelers) {
+            return true
+        }
+
+        return false
+    }
+
     // Add or remove traveler from the current editing room
     const handleTravelerSelect = (client: Traveler) => {
         if (!currentEditingRoom) return;
@@ -103,15 +116,7 @@ export function AddTravelers({ tripId, currentRooms }: AddTravelersProps) {
                 // Remove traveler if already in room
                 updatedTravelers = room.travelers.filter(t => t._id !== client._id);
             } else {
-                // Check max travelers per room type
-                const maxTravelers = 
-                    activeRoomType === 'triple' ? 3 : 
-                    activeRoomType === 'doubleCouple' || activeRoomType === 'doubleSingle' ? 2 : 0;
-                
-                if (room.travelers.length >= maxTravelers) {
-                    toast.warning(`Não é possível adicionar mais de ${maxTravelers} viajantes neste tipo de quarto.`);
-                    return prev;
-                }
+                if(isRoomFull(room)) return prev
                 
                 // Add traveler to room
                 updatedTravelers = [...room.travelers, client];
@@ -309,12 +314,12 @@ export function AddTravelers({ tripId, currentRooms }: AddTravelersProps) {
                                         {travelersQuery.data?.map((client) => {
                                             const isInCurrentRoom = currentEditingRoom?.travelers.some(t => t._id === client._id);
                                             const isAssignedElsewhere = !isInCurrentRoom && isTravelerAssigned(client._id);
-                                            
+
                                             return (
                                                 <div
                                                     key={client._id}
                                                     className={`p-3 rounded-lg border transition ${
-                                                        isAssignedElsewhere
+                                                        isAssignedElsewhere || (isRoomFull(currentEditingRoom!) && !isInCurrentRoom)
                                                             ? 'border-gray-200 bg-gray-50 opacity-50 cursor-not-allowed'
                                                             : isInCurrentRoom
                                                             ? 'border-primary-500 bg-primary-50 cursor-pointer'
@@ -330,6 +335,12 @@ export function AddTravelers({ tripId, currentRooms }: AddTravelersProps) {
                                                         {isAssignedElsewhere && (
                                                             <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full self-start">
                                                                 Já alocado
+                                                            </span>
+                                                        )}
+
+                                                        {isRoomFull(currentEditingRoom!) && !isInCurrentRoom && (
+                                                            <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-full self-start">
+                                                                Quarto lotado
                                                             </span>
                                                         )}
                                                     </div>
