@@ -10,8 +10,7 @@ export function NavMenu() {
   
   // Function to check if a route is active
   const isActive = (path: string) => {
-    console.log(path, pathname);
-    return pathname === path ? 'bg-primary-100 text-primary-600' : 'text-primary-600 hover:bg-primary-100';
+    return pathname.includes(path) ? 'bg-primary-100 text-primary-600' : 'text-primary-600 hover:bg-primary-100';
   };
 
   return (
