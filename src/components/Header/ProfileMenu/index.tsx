@@ -1,6 +1,12 @@
+"use client"
+
 import { FaUser, FaSignOutAlt } from 'react-icons/fa';
+import { AuthContext } from '../../../Contexts/AuthContext';
+import { use } from 'react';
 
 export function ProfileMenu() {
+    const { signOut } = use(AuthContext);
+
     return (
         <div className="w-48 bg-white shadow-lg rounded-md overflow-hidden mt-1">
           <nav className="p-2">
@@ -13,7 +19,7 @@ export function ProfileMenu() {
               </li>
               
               <li className="pt-2 mt-1 border-t">
-                <button className="flex items-center p-2 rounded-md w-full hover:bg-primary-100">
+                <button className="flex items-center p-2 rounded-md w-full hover:bg-primary-100" onClick={signOut}>
                     <FaSignOutAlt className="mr-3 text-primary-600 text-lg" />
                     <span className="font-medium text-primary-600">Sair</span>
                 </button>

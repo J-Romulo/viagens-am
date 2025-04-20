@@ -3,18 +3,22 @@
 import Image from "next/image";
 import AMLogo from "../../assets/am-logo.png";
 import { CustomPopover } from "../Popover";
-import { useState } from "react";
+import { use, useState } from "react";
 import { ProfileMenu } from "./ProfileMenu";
+import { AuthContext } from "../../Contexts/AuthContext";
 
 export function Header() {
+    const { user } = use(AuthContext);
+    
     const [isProfileMenuOpened, setIsProfileMenuOpened] = useState(false);
 
+    console.log(user)
     return (
         <div className="flex items-center justify-between w-full h-15 p-4 bg-primary-500 text-white shadow-lg">
             <div></div>
             <div className="flex items-center gap-x-3">
                 <p>
-                    Olá, usuário
+                    { user?.name }
                 </p>
 
                 <CustomPopover

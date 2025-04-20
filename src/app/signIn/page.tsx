@@ -1,11 +1,7 @@
 "use client";
 
-import { isAxiosError } from "axios";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import api from "../../services/api";
-import { setAuthCookie } from "../../utils/auth";
-import { toast } from "react-toastify";
 import Link from "next/link";
 import { Button } from "../../components/Button";
 import { TextInput } from "../../components/TextInput";
@@ -14,6 +10,8 @@ import { useForm } from "@tanstack/react-form";
 import { z } from "zod";
 import Loader from "react-spinners/ClipLoader";
 import AMLogo from "../../assets/am-logo.png";
+import { AuthContext } from "../../Contexts/AuthContext";
+import { use } from "react";
 
 const signInSchema = z.object({
     email: z.string()
@@ -26,6 +24,8 @@ const signInSchema = z.object({
 });
 
 export default function SignIn() {
+    const { signIn } = use(AuthContext);
+
     const form = useForm({
         defaultValues: {
             email: "",
@@ -41,24 +41,9 @@ export default function SignIn() {
     const router = useRouter();
 
     async function handleSubmit(data: {email: string; password: string; }) {
-        try {
-            const response = await api.post("auth/sign-in", { email: data.email, password: data.password });
-            const token = response.data.token;
-
-            localStorage.setItem("username", response.data.user.name);
-            localStorage.setItem("token", token);
-            await setAuthCookie(token);
+            await signIn({email: data.email, password: data.password})
 
             router.push("/home");
-        } catch (error) {
-            console.log(error);
-            if (isAxiosError(error)) {
-                toast.error(error.response?.data.message);
-                return;
-            }
-
-            toast.error("Ocorreu um erro ao tentar fazer login. Tente novamente em instantes.");
-        }
     }
 
     return (
