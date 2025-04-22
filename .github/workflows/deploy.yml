@@ -1,0 +1,62 @@
+name: Deployment
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22' # Use your Node.js version
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run dev
+
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY_PRIVATE }}
+          passphrase: ${{ secrets.SSH_PASSWORD }}
+          script: |
+            # Create the target directory if it doesn't exist
+            mkdir -p ${{ secrets.TARGET_DIR }}
+            
+            # Navigate to the target directory
+            cd ${{ secrets.TARGET_DIR }}
+            
+            git pull
+            
+            # Install dependencies
+            npm ci
+            
+            # Build the application (if needed)
+            npm run dev
+            
+            # Start/reload the application using the ecosystem file
+            if [ -f ecosystem.config.js ]; then
+              pm2 reload ecosystem.config.js --update-env
+            else
+              # Fallback if no ecosystem file
+              if pm2 list | grep -q "viagens-am"; then
+                # Restart the application
+                pm2 restart viagens-am
+              else
+                # Start the application
+                pm2 start npm --name "viagens-am" -- start
+              fi
+            fi
+            
+            # Save PM2 configuration
+            pm2 save
