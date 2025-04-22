@@ -29,16 +29,11 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY_PRIVATE }}
           script: |
-            ls
             # Navigate to the target directory
-            cd apps
+            cd ${{ secrets.TARGET_DIR }}
             
             ls
 
-            cd viagens-am
-            
-            ls
-            
             git pull
             
             # Install dependencies
