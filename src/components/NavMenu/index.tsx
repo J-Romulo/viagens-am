@@ -34,7 +34,7 @@ export function NavMenu() {
           <li>
             <Link href="/travelers" className={`flex items-center p-3 rounded-md ${isActive('/travelers')}`}>
               <FaUsers className="mr-3 text-xl" />
-              <span className="font-medium">Viajantes</span>
+              <span className="font-medium">Clientes</span>
             </Link>
           </li>
           

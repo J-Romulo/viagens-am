@@ -46,7 +46,7 @@ export default function TravelerDetails({ params }: { params: Promise<{ id: stri
 
   useEffect(() => {
     if (travelerQuery.isError) {
-      toast.error("Ocorreu um erro ao tentar buscar as informações do viajante. Tente novamente em instantes.");
+      toast.error("Ocorreu um erro ao tentar buscar as informações do cliente. Tente novamente em instantes.");
     }
   }, [travelerQuery.isError]);
 
@@ -68,7 +68,7 @@ export default function TravelerDetails({ params }: { params: Promise<{ id: stri
   const updateTravelerMutation = useMutation({
     mutationFn: ({ id, data }: { id: string, data: Partial<Traveler> }) => updateTraveler(id, data),
     onSuccess: () => {
-      toast.success("Viajante atualizado com sucesso.");
+      toast.success("Cliente atualizado com sucesso.");
       queryClient.invalidateQueries({ queryKey: ['traveler', id] });
       setIsEditing(false);
     },
@@ -78,7 +78,7 @@ export default function TravelerDetails({ params }: { params: Promise<{ id: stri
         return;
       }
 
-      toast.error("Ocorreu um erro ao atualizar o viajante. Tente novamente em instantes.");
+      toast.error("Ocorreu um erro ao atualizar o cliente. Tente novamente em instantes.");
     }
   });
 
@@ -98,7 +98,7 @@ export default function TravelerDetails({ params }: { params: Promise<{ id: stri
   if(travelerQuery.isLoading || !travelerQuery.data) {
     return (
       <div className="flex flex-col w-full h-full items-center bg-white shadow-lg rounded-lg px-10 py-5">
-          <PageTitle title="Detalhes do Viajante" />
+          <PageTitle title="Detalhes do cliente" />
           <Loader
               color={"#4f46e5"}
               loading={true}
@@ -118,7 +118,7 @@ export default function TravelerDetails({ params }: { params: Promise<{ id: stri
                   >
                       <IoIosArrowBack size={30} />
                   </div>
-                  <PageTitle title="Detalhes do Viajante" />
+                  <PageTitle title="Detalhes do cliente" />
               </div>
               {!isEditing ? (
                 <button
@@ -176,7 +176,7 @@ export default function TravelerDetails({ params }: { params: Promise<{ id: stri
                     type="text"
                     value={field.state.value}
                     onChange={(text) => field.handleChange(text)}
-                    placeholder="Nome do viajante"
+                    placeholder="Nome do cliente"
                     required={true}
                     className="w-lg"
                     disabled={!isEditing}
@@ -241,7 +241,7 @@ export default function TravelerDetails({ params }: { params: Promise<{ id: stri
           </form>
           <div className="w-full mt-20">
             <div className="flex items-center justify-between px-10">
-              <h3 className="text-lg text-primary-500 font-semibold mb-4">Viajantes ({travelerQuery.data.trips?.length || 0})</h3>
+              <h3 className="text-lg text-primary-500 font-semibold mb-4">Viagens ({travelerQuery.data.trips?.length || 0})</h3>
               <AddTrips 
                 clientId={id}
                 currentTrips={travelerQuery.data.trips}

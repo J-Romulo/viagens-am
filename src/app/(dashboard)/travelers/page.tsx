@@ -26,14 +26,14 @@ export default function Travelers() {
 
   useEffect(() => {
     if (travelersQuery.isError) {
-      toast.error("Ocorreu um erro ao tentar buscar seus viajantes. Tente novamente em instantes.");
+      toast.error("Ocorreu um erro ao tentar buscar seus clientes. Tente novamente em instantes.");
     }
   }, [travelersQuery.isError]);
         
   if(travelersQuery.isLoading) {
     return (
       <div className="flex flex-col w-full h-full items-center bg-white shadow-lg rounded-lg px-10 py-5">
-          <PageTitle title="Viajantes" />
+          <PageTitle title="Clientes" />
           <Loader
               color={"#4f46e5"}
               loading={true}
@@ -86,7 +86,7 @@ export default function Travelers() {
   return (
       <div className="flex flex-col bg-white shadow-lg rounded-lg px-10 py-5 w-full h-full overflow-y-auto">
           <div className="flex items-center justify-between mb-6">
-            <PageTitle title="Viajantes" />
+            <PageTitle title="Clientes" />
           </div>
 
           <Table 
@@ -101,7 +101,7 @@ export default function Travelers() {
             size="small"
             className="mt-8"
           >
-            Adicionar viajante
+            Adicionar cliente
           </Button>
       </div>
   )

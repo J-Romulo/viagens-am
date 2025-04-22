@@ -48,7 +48,7 @@ export default function CreateTraveler() {
     const createTravelerMutation = useMutation({
         mutationFn: createTraveler,
         onSuccess: () => {
-            toast.success("Viajante criado com sucesso.");
+            toast.success("Cliente criado com sucesso.");
             router.push("/travelers");
         },
         onError: (error) => {
@@ -57,7 +57,7 @@ export default function CreateTraveler() {
                 return;
             }
 
-            toast.error("Ocorreu um erro ao criar o viajante. Tente novamente em instantes.");
+            toast.error("Ocorreu um erro ao criar o cliente. Tente novamente em instantes.");
         }
     });
 
@@ -80,7 +80,7 @@ export default function CreateTraveler() {
                   >
                       <IoIosArrowBack size={30} />
                   </div>
-                  <PageTitle title="Criar viajante" />
+                  <PageTitle title="Criar cliente" />
               </div>
             </div>
 
@@ -107,7 +107,7 @@ export default function CreateTraveler() {
                                         type="text"
                                         value={field.state.value}
                                         onChange={(text) => field.handleChange(text)}
-                                        placeholder="Nome do viajante"
+                                        placeholder="Nome do cliente"
                                         errors={field.state.meta.errors}
                                         required={true}
                                         className="w-lg"

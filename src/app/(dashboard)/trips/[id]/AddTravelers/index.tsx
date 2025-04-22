@@ -48,7 +48,7 @@ export function AddTravelers({ tripId, currentRooms }: AddTravelersProps) {
         } }) => 
             updateTripClients(id, rooms),
         onSuccess: () => {
-            toast.success("Viajantes atualizados com sucesso.");
+            toast.success("Clientes atualizados com sucesso.");
             queryClient.invalidateQueries({ queryKey: ['trip', tripId] });
             setIsOpen(false);
             setShowTravelerSelector(false)
@@ -61,7 +61,7 @@ export function AddTravelers({ tripId, currentRooms }: AddTravelersProps) {
                 return;
             }
 
-            toast.error("Ocorreu um erro ao atualizar os viajantes. Tente novamente em instantes.");
+            toast.error("Ocorreu um erro ao atualizar os Clientes. Tente novamente em instantes.");
         }
     });
 
@@ -183,12 +183,12 @@ export function AddTravelers({ tripId, currentRooms }: AddTravelersProps) {
                 onClick={() => setIsOpen(true)}
                 className="text-primary-400 hover:text-primary-500 hover:underline transition"
             >
-                Atualizar viajantes
+                Atualizar clientes
             </button>
             <CustomModal
                 isOpen={isOpen}
                 onRequestClose={() => setIsOpen(false)}
-                headerTitle="Atualizar lista de viajantes por quarto"
+                headerTitle="Atualizar lista de clientes por quarto"
             >
                 {travelersQuery.isLoading ? (
                     <div className="flex justify-center p-10">
@@ -277,7 +277,7 @@ export function AddTravelers({ tripId, currentRooms }: AddTravelersProps) {
                                                     
                                                     {room.travelers.length === 0 ? (
                                                         <div className="text-gray-500 text-sm py-2">
-                                                            Nenhum viajante adicionado
+                                                            Nenhum cliente adicionado
                                                         </div>
                                                     ) : (
                                                         <div className="space-y-2">
@@ -299,7 +299,7 @@ export function AddTravelers({ tripId, currentRooms }: AddTravelersProps) {
                                 <>
                                     <div className="flex justify-between items-center mb-6">
                                         <h3 className="text-lg font-medium text-gray-900">
-                                            Selecionar Viajantes para Quarto #{currentEditingRoom?.id}
+                                            Selecionar clientes para Quarto #{currentEditingRoom?.id}
                                         </h3>
                                         <Button
                                             onClick={() => setShowTravelerSelector(false)}
