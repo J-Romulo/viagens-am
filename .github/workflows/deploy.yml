@@ -29,12 +29,15 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY_PRIVATE }}
           script: |
+            ls
             # Create the target directory if it doesn't exist
             mkdir -p ${{ secrets.TARGET_DIR }}
             
             # Navigate to the target directory
             cd ${{ secrets.TARGET_DIR }}
             
+            ls
+
             git pull
             
             # Install dependencies
