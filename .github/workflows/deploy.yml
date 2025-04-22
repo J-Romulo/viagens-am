@@ -22,33 +22,20 @@ jobs:
         script: |
           # List home directory contents
           echo "Home directory contents:"
-          ls -la ~
+          ls -la
           
           # Check if apps directory exists
-          if [ ! -d "~/apps" ]; then
+          if [ ! -d "/apps" ]; then
             echo "Creating apps directory"
-            mkdir -p ~/apps
+            mkdir -p /apps
           fi
           
           # Navigate to the apps directory
-          cd ~/apps
+          cd /apps
           echo "Apps directory contents:"
           ls -la
           
-          # Navigate to project directory or clone if not exists
-          if [ ! -d "viagens-am" ]; then
-            echo "Project directory doesn't exist. Cloning repository..."
-            git clone https://github.com/yourusername/viagens-am.git
-            cd viagens-am
-          else
-            cd viagens-am
-            echo "Checking if directory is a git repository..."
-            if [ ! -d ".git" ]; then
-              echo "Directory is not a git repository. Initializing git..."
-              git init
-              git remote add origin https://github.com/yourusername/viagens-am.git
-            fi
-          fi
+          cd viagens-am
           
           echo "Current directory: $(pwd)"
           ls -la
