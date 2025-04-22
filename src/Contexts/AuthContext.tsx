@@ -20,6 +20,7 @@ export type AuthContextData = {
 	user: User | null;
 	signIn(credentials: SignInCredentials): Promise<void>;
 	signOut(): void;
+    updateUserData(user: User): void
 };
 
 export const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -81,7 +82,6 @@ export function AuthProvider({
 	}
 
     async function signOut() {
-        console.log('test2')
 		clearAuthState();
 		router.push("/signIn");
 	}
@@ -92,12 +92,18 @@ export function AuthProvider({
         deleteAuthCookie()
 	}
 
+    async function updateUserData(user: User) {
+        setUser(user)
+        userDataQuery.refetch()
+    }
+
     return (
         <AuthContext.Provider
             value={{
                 user,
                 signIn,
                 signOut,
+                updateUserData
             }}
         >
             { children }

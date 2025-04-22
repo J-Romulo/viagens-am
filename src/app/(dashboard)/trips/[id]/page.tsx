@@ -20,6 +20,7 @@ import { AddTravelers } from "./AddTravelers";
 import { IoPerson } from "react-icons/io5";
 import { IoMdBed } from "react-icons/io";
 import { ClientsReport } from "./ClientsReport";
+import { AuthContext } from "../../../../Contexts/AuthContext";
 
 const tripSchema = z.object({
   city: z.string()
@@ -52,6 +53,7 @@ const tripSchema = z.object({
 type RoomType = 'doubleCouple' | 'doubleSingle' | 'triple';
 
 export default function TripDetails({ params }: { params: Promise<{ id: string }> }) {
+  const { user } = use(AuthContext)
   const { generatePDF } = ClientsReport()
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -152,7 +154,7 @@ export default function TripDetails({ params }: { params: Promise<{ id: string }
   if(tripQuery.isLoading || !tripQuery.data) {
     return (
       <div className="flex flex-col w-full h-full items-center bg-white shadow-lg rounded-lg px-10 py-5">
-          <PageTitle title="Detalhes da Viagem" />
+          <PageTitle title="Detalhes da viagem" />
           <Loader
               color={"#4f46e5"}
               loading={true}
@@ -172,7 +174,7 @@ export default function TripDetails({ params }: { params: Promise<{ id: string }
                   >
                       <IoIosArrowBack size={30} />
                   </div>
-                  <PageTitle title="Detalhes da Viagem" />
+                  <PageTitle title="Detalhes da viagem" />
               </div>
               {!isEditing ? (
                 <button
@@ -354,7 +356,7 @@ export default function TripDetails({ params }: { params: Promise<{ id: string }
           <div className="w-full mt-16">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-lg text-primary-500 font-semibold">
-                Viajantes ({getTotalTravelers()})
+                Clientes ({getTotalTravelers()})
               </h3>
               <div className="flex align-center gap-x-3">
                 <AddTravelers 
@@ -362,7 +364,7 @@ export default function TripDetails({ params }: { params: Promise<{ id: string }
                   currentRooms={tripQuery.data.rooms}
                 />
                 <button
-                  onClick={() => generatePDF(tripQuery.data)}
+                  onClick={() => generatePDF(tripQuery.data, user!)}
                   className="text-primary-400 hover:text-primary-500 hover:underline transition"
                 >
                   Gerar relatório de clientes
@@ -386,21 +388,21 @@ export default function TripDetails({ params }: { params: Promise<{ id: string }
                       Nenhum quarto deste tipo adicionado.
                     </div>
                   ) : (
-                    tripQuery.data.rooms.doubleCouple.map((room) => (
+                    tripQuery.data.rooms.doubleCouple.map((room, index) => (
                       <div key={room.id} className="border border-gray-200 rounded-lg">
                         <div className="bg-gray-50 px-4 py-2 border-b border-gray-200 flex justify-between">
                           <div className="flex items-center">
                             <IoMdBed className="text-primary-500 mr-2" size={18} />
-                            <span className="font-medium">Quarto #{room.id}</span>
+                            <span className="font-medium">Quarto #{index + 1}</span>
                           </div>
                           <span className="text-sm text-gray-600">
-                            {room.travelers?.length || 0} {(room.travelers?.length || 0) === 1 ? 'viajante' : 'viajantes'}
+                            {room.travelers?.length || 0} {(room.travelers?.length || 0) === 1 ? 'cliente' : 'Clientes'}
                           </span>
                         </div>
                         
                         {!room.travelers || room.travelers.length === 0 ? (
                           <div className="p-3 text-sm text-gray-500">
-                            Nenhum viajante adicionado
+                            Nenhum cliente adicionado
                           </div>
                         ) : (
                           <div className="divide-y divide-gray-100">
@@ -413,7 +415,7 @@ export default function TripDetails({ params }: { params: Promise<{ id: string }
                                 <button
                                   onClick={() => router.push(`/travelers/${traveler._id}`)}
                                   className="text-primary-400 hover:text-primary-500 transition p-1 rounded-full hover:bg-gray-100"
-                                  title="Ver detalhes do viajante"
+                                  title="Ver detalhes do cliente"
                                 >
                                   <IoPerson size={18} />
                                 </button>
@@ -441,21 +443,21 @@ export default function TripDetails({ params }: { params: Promise<{ id: string }
                       Nenhum quarto deste tipo adicionado.
                     </div>
                   ) : (
-                    tripQuery.data.rooms.doubleSingle.map((room) => (
+                    tripQuery.data.rooms.doubleSingle.map((room, index) => (
                       <div key={room.id} className="border border-gray-200 rounded-lg">
                         <div className="bg-gray-50 px-4 py-2 border-b border-gray-200 flex justify-between">
                           <div className="flex items-center">
                             <IoMdBed className="text-primary-500 mr-2" size={18} />
-                            <span className="font-medium">Quarto #{room.id}</span>
+                            <span className="font-medium">Quarto #{index + 1}</span>
                           </div>
                           <span className="text-sm text-gray-600">
-                            {room.travelers?.length || 0} {(room.travelers?.length || 0) === 1 ? 'viajante' : 'viajantes'}
+                            {room.travelers?.length || 0} {(room.travelers?.length || 0) === 1 ? 'cliente' : 'Clientes'}
                           </span>
                         </div>
                         
                         {!room.travelers || room.travelers.length === 0 ? (
                           <div className="p-3 text-sm text-gray-500">
-                            Nenhum viajante adicionado
+                            Nenhum cliente adicionado
                           </div>
                         ) : (
                           <div className="divide-y divide-gray-100">
@@ -468,7 +470,7 @@ export default function TripDetails({ params }: { params: Promise<{ id: string }
                                 <button
                                   onClick={() => router.push(`/travelers/${traveler._id}`)}
                                   className="text-primary-400 hover:text-primary-500 transition p-1 rounded-full hover:bg-gray-100"
-                                  title="Ver detalhes do viajante"
+                                  title="Ver detalhes do cliente"
                                 >
                                   <IoPerson size={18} />
                                 </button>
@@ -496,21 +498,21 @@ export default function TripDetails({ params }: { params: Promise<{ id: string }
                       Nenhum quarto deste tipo adicionado.
                     </div>
                   ) : (
-                    tripQuery.data.rooms.triple.map((room) => (
+                    tripQuery.data.rooms.triple.map((room, index) => (
                       <div key={room.id} className="border border-gray-200 rounded-lg">
                         <div className="bg-gray-50 px-4 py-2 border-b border-gray-200 flex justify-between">
                           <div className="flex items-center">
                             <IoMdBed className="text-primary-500 mr-2" size={18} />
-                            <span className="font-medium">Quarto #{room.id}</span>
+                            <span className="font-medium">Quarto #{index + 1}</span>
                           </div>
                           <span className="text-sm text-gray-600">
-                            {room.travelers?.length || 0} {(room.travelers?.length || 0) === 1 ? 'viajante' : 'viajantes'}
+                            {room.travelers?.length || 0} {(room.travelers?.length || 0) === 1 ? 'cliente' : 'Clientes'}
                           </span>
                         </div>
                         
                         {!room.travelers || room.travelers.length === 0 ? (
                           <div className="p-3 text-sm text-gray-500">
-                            Nenhum viajante adicionado
+                            Nenhum cliente adicionado
                           </div>
                         ) : (
                           <div className="divide-y divide-gray-100">
@@ -523,7 +525,7 @@ export default function TripDetails({ params }: { params: Promise<{ id: string }
                                 <button
                                   onClick={() => router.push(`/travelers/${traveler._id}`)}
                                   className="text-primary-400 hover:text-primary-500 transition p-1 rounded-full hover:bg-gray-100"
-                                  title="Ver detalhes do viajante"
+                                  title="Ver detalhes do cliente"
                                 >
                                   <IoPerson size={18} />
                                 </button>
