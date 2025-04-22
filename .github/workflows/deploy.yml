@@ -26,8 +26,8 @@ jobs:
         script: |
           eval "$(ssh-agent -s)"
 
-          ssh-add root/.ssh/github
-          
+          ssh-add ../root/.ssh/github
+
           # List home directory contents
           echo "Home directory contents:"
           ls -la
