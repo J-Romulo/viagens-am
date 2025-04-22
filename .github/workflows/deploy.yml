@@ -24,18 +24,42 @@ jobs:
           echo "Home directory contents:"
           ls -la ~
           
+          # Check if apps directory exists
+          if [ ! -d "~/apps" ]; then
+            echo "Creating apps directory"
+            mkdir -p ~/apps
+          fi
+          
           # Navigate to the apps directory
           cd ~/apps
           echo "Apps directory contents:"
           ls -la
           
-          cd ~/apps/viagens-am
-
+          # Navigate to project directory or clone if not exists
+          if [ ! -d "viagens-am" ]; then
+            echo "Project directory doesn't exist. Cloning repository..."
+            git clone https://github.com/yourusername/viagens-am.git
+            cd viagens-am
+          else
+            cd viagens-am
+            echo "Checking if directory is a git repository..."
+            if [ ! -d ".git" ]; then
+              echo "Directory is not a git repository. Initializing git..."
+              git init
+              git remote add origin https://github.com/yourusername/viagens-am.git
+            fi
+          fi
+          
           echo "Current directory: $(pwd)"
+          ls -la
           
           # Pull the latest changes
           echo "Pulling latest changes..."
           git pull origin main
+          
+          # Make sure Node.js environment is activated
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
           
           # Check Node.js version
           echo "Node.js version:"
