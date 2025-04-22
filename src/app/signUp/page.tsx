@@ -52,20 +52,15 @@ export default function SignUp() {
 
   async function handleSubmit(data: {name: string; email: string; password: string; confirmationPassword: string; }) {
       try {
-          const response = await api.post("auth/sign-up", { 
+          await api.post("auth/sign-up", { 
               name: data.name,
               email: data.email, 
               password: data.password,
               confirmPassword: data.confirmationPassword,
           });
-          const token = response.data.token;
-
-          localStorage.setItem("username", response.data.user.name);
-          localStorage.setItem("token", token);
-          await setAuthCookie(token);
 
           toast.success("Cadastro realizado com sucesso!");
-          router.push("/home");
+          router.push("/signIn");
       } catch (error) {
           console.log(error);
           if (isAxiosError(error)) {
