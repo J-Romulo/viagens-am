@@ -1,4 +1,3 @@
-
 name: Deploy to VPS using PM2
 
 on:
@@ -21,56 +20,61 @@ jobs:
         key: ${{ secrets.SSH_KEY_PRIVATE }}
         script_stop: true  # Stop script execution when an error occurs
         script: |
-          # Print current directory and list contents
+          # List home directory contents
+          echo "Home directory contents:"
+          ls -la ~
+          
+          # Check if apps directory exists
+          if [ ! -d "~/apps" ]; then
+            echo "Creating apps directory"
+            mkdir -p ~/apps
+          fi
+          
+          # Navigate to the apps directory
+          cd ~/apps
+          echo "Apps directory contents:"
+          ls -la
+          
+          # Navigate to project directory or clone if not exists
+          if [ ! -d "viagens-am" ]; then
+            echo "Project directory doesn't exist. Cloning repository..."
+            git clone https://github.com/yourusername/viagens-am.git
+            cd viagens-am
+          else
+            cd viagens-am
+            echo "Checking if directory is a git repository..."
+            if [ ! -d ".git" ]; then
+              echo "Directory is not a git repository. Initializing git..."
+              git init
+              git remote add origin https://github.com/yourusername/viagens-am.git
+            fi
+          fi
+          
           echo "Current directory: $(pwd)"
           ls -la
           
-          # Check if we're in a git repository already
-          if [ ! -d ".git" ]; then
-            echo "Not in a git repository. Navigating to target directory."
-            
-            # Navigate to the target directory
-            cd ${{ secrets.TARGET_DIR }}
-            echo "Changed to directory: $(pwd)"
-            ls -la
-          fi
-          
-          # Check if git is installed
-          if ! command -v git &> /dev/null; then
-            echo "Git is not installed. Installing git..."
-            sudo apt-get update
-            sudo apt-get install -y git
-          fi
-          
-          # Check if we're in a git repository now
-          if [ ! -d ".git" ]; then
-            echo "Directory is not a git repository. Cannot pull."
-            exit 1
-          fi
-          
           # Pull the latest changes
+          echo "Pulling latest changes..."
           git pull origin main
           
-          # Check if Node.js is installed
-          if ! command -v node &> /dev/null; then
-            echo "Node.js is not installed. Installing Node.js..."
-            curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
-            sudo apt-get install -y nodejs
-          fi
+          # Make sure Node.js environment is activated
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
           
-          # Check if npm is installed
-          if ! command -v npm &> /dev/null; then
-            echo "npm is not installed. Installing npm..."
-            sudo apt-get install -y npm
-          fi
+          # Check Node.js version
+          echo "Node.js version:"
+          node -v
+          echo "NPM version:"
+          npm -v
           
           # Install dependencies
+          echo "Installing dependencies..."
           npm install
           
-          # Check if PM2 is installed globally
+          # Check if PM2 is available
           if ! command -v pm2 &> /dev/null; then
             echo "PM2 is not installed. Installing PM2 globally..."
-            sudo npm install -g pm2
+            npm install -g pm2
           fi
           
           # Check for ecosystem.config.js
