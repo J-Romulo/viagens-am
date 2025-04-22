@@ -29,6 +29,7 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY_PRIVATE }}
           script: |
+            ls
             # Navigate to the target directory
             cd ${{ secrets.TARGET_DIR }}
             
