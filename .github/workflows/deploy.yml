@@ -38,6 +38,7 @@ jobs:
             cd viagens-am
             
             ls
+            
             git pull
             
             # Install dependencies
