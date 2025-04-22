@@ -17,7 +17,10 @@ jobs:
           node-version: '22' # Use your Node.js version
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
+
+      - name: Install PM2
+        run: npm i pm2
 
       #- name: Build application
        # run: npm run dev
@@ -37,7 +40,7 @@ jobs:
             git pull
             
             # Install dependencies
-            npm ci
+            npm install
             
             # Build the application (if needed)
             npm run dev
