@@ -31,10 +31,12 @@ jobs:
           script: |
             ls
             # Navigate to the target directory
-            cd ${{ secrets.TARGET_DIR }}
+            cd apps
             
             ls
 
+            cd viagens-am
+            
             git pull
             
             # Install dependencies
