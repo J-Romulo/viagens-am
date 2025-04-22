@@ -78,7 +78,7 @@ export default function SignUp() {
   }
 
   return (
-      <div className="relative w-5/6 h-5/6 md:w-2/5 md:h-5/6 p-1 md:p-6 flex flex-col items-center justify-center bg-white rounded-lg shadow-lg">
+      <div className="relative w-80/100 h-80/100 md:w-2/5 md:h-5/6 p-1 pb-3 md:p-6 flex flex-col items-center justify-center bg-white rounded-lg shadow-lg overflow-y-auto">
           <div
             className="absolute top-7 left-7 rounded-full p-2 hover:text-primary-500 transition text-primary-400 cursor-pointer"
             onClick={() => router.push("/signIn")}
@@ -92,7 +92,7 @@ export default function SignUp() {
                   e.stopPropagation()
                   form.handleSubmit()
               }}
-              className="w-full flex flex-col items-center justify-center"
+              className="w-full h-full flex flex-col items-center justify-center"
           >
               <div className="space-y-6 mx-auto mt-6 w-2/3">
                   <form.Field

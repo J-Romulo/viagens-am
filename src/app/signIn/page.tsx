@@ -47,9 +47,9 @@ export default function SignIn() {
     }
 
     return (
-        <div className="relative w-5/6 h-5/6 md:w-2/5 md:h-5/6 p-1 md:p-6 flex flex-col items-center justify-center bg-white rounded-lg shadow-lg">
-            <div className="w-full flex flex-col items-center gap-x-3">
-                <Image src={AMLogo} alt="AM Viajens logo" width={300} height={250} unoptimized/>
+        <div className="relative w-80/100 h-80/100 md:w-2/5 md:h-5/6 p-1 pb-3 md:p-6 flex flex-col items-center justify-center bg-white rounded-lg shadow-lg overflow-y-auto">
+            <div className="w-full h-full flex flex-col items-center justify-center">
+                <Image src={AMLogo} alt="AM Viagens logo" width={290} height={150} unoptimized/>
             </div>
 
             <form
