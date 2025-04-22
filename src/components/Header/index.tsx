@@ -38,10 +38,10 @@ export function Header() {
                             onClick={() => setIsProfileMenuOpened(!isProfileMenuOpened)}
                         />
                     ) : (
-                        <div className="w-full h-full rounded-full bg-primary-100 flex items-center justify-center">
-                        <span className="text-4xl font-bold text-primary-500">
-                            {user?.name.charAt(0).toUpperCase()}
-                        </span>
+                        <div className="w-13 h-13 rounded-full bg-primary-100 flex items-center justify-center cursor-pointer" onClick={() => setIsProfileMenuOpened(!isProfileMenuOpened)}>
+                            <span className="text-4xl font-bold text-primary-500">
+                                {user?.name.charAt(0).toUpperCase()}
+                            </span>
                         </div>
                     )}
                 </CustomPopover>
