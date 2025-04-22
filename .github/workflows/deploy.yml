@@ -29,13 +29,13 @@ jobs:
           echo "Apps directory contents:"
           ls -la
           
+          cd ~/apps/viagens-am
+
           echo "Current directory: $(pwd)"
           
           # Pull the latest changes
           echo "Pulling latest changes..."
           git pull origin main
-
-          nvm use 22
           
           # Check Node.js version
           echo "Node.js version:"
