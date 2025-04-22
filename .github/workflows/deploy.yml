@@ -1,67 +1,100 @@
-name: Deployment
+
+name: Deploy to VPS using PM2
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main ]  # Change this to your main branch name if different
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '22' # Use your Node.js version
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Install PM2
-        run: npm i pm2
-
-      #- name: Build application
-       # run: npm run dev
-
-      - name: Deploy to VPS
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_KEY_PRIVATE }}
-          script: |
-            ls
-
-            echo ${{ secrets.TARGET_DIR }}
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Deploy to VPS
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USER }}
+        key: ${{ secrets.SSH_KEY_PRIVATE }}
+        script_stop: true  # Stop script execution when an error occurs
+        script: |
+          # Print current directory and list contents
+          echo "Current directory: $(pwd)"
+          ls -la
+          
+          # Check if we're in a git repository already
+          if [ ! -d ".git" ]; then
+            echo "Not in a git repository. Navigating to target directory."
             
             # Navigate to the target directory
             cd ${{ secrets.TARGET_DIR }}
-            
-            ls
-
-            git pull
-            
-            # Install dependencies
-            npm install
-            
-            # Build the application (if needed)
-            npm run dev
-            
-            # Start/reload the application using the ecosystem file
-            if [ -f ecosystem.config.js ]; then
-              pm2 reload ecosystem.config.js --update-env
+            echo "Changed to directory: $(pwd)"
+            ls -la
+          fi
+          
+          # Check if git is installed
+          if ! command -v git &> /dev/null; then
+            echo "Git is not installed. Installing git..."
+            sudo apt-get update
+            sudo apt-get install -y git
+          fi
+          
+          # Check if we're in a git repository now
+          if [ ! -d ".git" ]; then
+            echo "Directory is not a git repository. Cannot pull."
+            exit 1
+          fi
+          
+          # Pull the latest changes
+          git pull origin main
+          
+          # Check if Node.js is installed
+          if ! command -v node &> /dev/null; then
+            echo "Node.js is not installed. Installing Node.js..."
+            curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+            sudo apt-get install -y nodejs
+          fi
+          
+          # Check if npm is installed
+          if ! command -v npm &> /dev/null; then
+            echo "npm is not installed. Installing npm..."
+            sudo apt-get install -y npm
+          fi
+          
+          # Install dependencies
+          npm install
+          
+          # Check if PM2 is installed globally
+          if ! command -v pm2 &> /dev/null; then
+            echo "PM2 is not installed. Installing PM2 globally..."
+            sudo npm install -g pm2
+          fi
+          
+          # Check for ecosystem.config.js
+          if [ -f ecosystem.config.js ]; then
+            echo "Found ecosystem.config.js, using it to start/reload the application"
+            pm2 reload ecosystem.config.js --update-env
+          else
+            echo "No ecosystem.config.js found, using standard PM2 commands"
+            # Check if the app is already running in PM2
+            if pm2 list | grep -q "viagens-am"; then
+              # Restart the application
+              echo "Restarting existing PM2 process"
+              pm2 restart viagens-am --update-env
             else
-              # Fallback if no ecosystem file
-              if pm2 list | grep -q "viagens-am"; then
-                # Restart the application
-                pm2 restart viagens-am
-              else
-                # Start the application
-                pm2 start npm --name "viagens-am" -- start
-              fi
+              # Start the application for the first time
+              echo "Starting new PM2 process"
+              pm2 start npm --name "viagens-am" -- start
             fi
-            
-            # Save PM2 configuration
-            pm2 save
+          fi
+          
+          # Save PM2 process list
+          echo "Saving PM2 process list"
+          pm2 save
+          
+          # Display PM2 status
+          echo "Current PM2 processes:"
+          pm2 list
