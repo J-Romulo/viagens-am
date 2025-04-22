@@ -24,6 +24,10 @@ jobs:
         key: ${{ secrets.SSH_KEY_PRIVATE }}
         script_stop: true  # Stop script execution when an error occurs
         script: |
+          eval "$(ssh-agent -s)"
+
+          ssh-add root/.ssh/github
+          
           # List home directory contents
           echo "Home directory contents:"
           ls -la
