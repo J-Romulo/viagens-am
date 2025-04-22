@@ -3,8 +3,10 @@
 import { FaUser, FaSignOutAlt } from 'react-icons/fa';
 import { AuthContext } from '../../../Contexts/AuthContext';
 import { use } from 'react';
+import { useRouter } from 'next/navigation';
 
 export function ProfileMenu() {
+    const router = useRouter()
     const { signOut } = use(AuthContext);
 
     return (
@@ -12,7 +14,7 @@ export function ProfileMenu() {
           <nav className="p-2">
             <ul className="space-y-1">
               <li>
-                <button className="flex items-center p-2 rounded-md w-full hover:bg-primary-100">
+                <button className="flex items-center p-2 rounded-md w-full hover:bg-primary-100" onClick={() => router.push('/profile')}>
                     <FaUser className="mr-3 text-primary-600 text-lg" />
                     <span className="font-medium text-primary-600">Perfil</span>
                 </button>
