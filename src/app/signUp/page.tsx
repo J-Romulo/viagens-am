@@ -4,7 +4,6 @@ import { useForm } from "@tanstack/react-form";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
 import api from "../../services/api";
-import { setAuthCookie } from "../../utils/auth";
 import { toast } from "react-toastify";
 import { isAxiosError } from "axios";
 import { IoIosArrowBack } from "react-icons/io";

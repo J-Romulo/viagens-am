@@ -27,9 +27,9 @@ export function Header() {
 					onClose={() => setIsProfileMenuOpened(false)}
                     content={<ProfileMenu />}
                 >
-                    {user?.avatar ? (
+                    {user && user.avatar ? (
                         <Image 
-                            src={`${process.env.NEXT_PUBLIC_API_URL}/images/avatars/${user?.avatar}`}
+                            src={`${process.env.NEXT_PUBLIC_API_URL}/images/avatars/${user.avatar}`}
                             alt="Imagem de perfil"
                             className="rounded-full w-13 h-13 object-contain bg-white cursor-pointer"
                             unoptimized

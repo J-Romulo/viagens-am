@@ -85,8 +85,9 @@ export default function Profile() {
       if(isAxiosError(error)) {
         toast.error(error.response?.data.message);
         return;
+      }else {
+        toast.error("Ocorreu um erro ao atualizar avatar. Tente novamente em instantes.");
       }
-      toast.error("Ocorreu um erro ao atualizar avatar. Tente novamente em instantes.");
     }
   });
 
