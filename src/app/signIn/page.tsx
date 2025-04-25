@@ -75,7 +75,7 @@ export default function SignIn() {
                   type='email'
                   value={field.state.value}
                   onChange={(text) => field.handleChange(text)}
-                  placeholder='Digite sua email'
+                  placeholder='Digite seu email'
                   required={true}
                 />
               );
