@@ -43,11 +43,5 @@
     "prettier-plugin-tailwindcss": "^0.6.11",
     "tailwindcss": "^4",
     "typescript": "^5"
-  },
-  "lint-staged": {
-    "**/*.{js,jsx,ts,tsx}": [
-      "npm run format:fix",
-      "npm run lint --fix"
-    ]
   }
 }
