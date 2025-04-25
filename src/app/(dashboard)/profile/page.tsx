@@ -15,8 +15,7 @@ import { isAxiosError } from "axios";
 import Loader from "react-spinners/ClipLoader";
 import { MdPhotoCamera } from "react-icons/md";
 import Image from "next/image";
-import { User } from "../../../@types/User";
-import { updateAvatar } from "../../../services/queries/User";
+import { updateAvatar, updateUser } from "../../../services/queries/User";
 
 const profileSchema = z.object({
   name: z.string()
@@ -59,7 +58,7 @@ export default function Profile() {
   }, [user, form]);
 
   const updateProfileMutation = useMutation({
-    mutationFn: (data: Partial<User>) => updateUserProfile(user?._id, data),
+    mutationFn: (data: {email: string, name: string}) => updateUser(user!._id, data),
     onSuccess: () => {
       toast.success("Perfil atualizado com sucesso.");
       queryClient.invalidateQueries({ queryKey: ['fetchUserAccessData'] });
@@ -91,7 +90,7 @@ export default function Profile() {
     }
   });
 
-  async function handleSubmit(data: Partial<User>) {
+  async function handleSubmit(data: { email: string, name: string}) {
     await updateProfileMutation.mutateAsync(data);
   }
 
@@ -232,7 +231,7 @@ export default function Profile() {
           e.stopPropagation();
           form.handleSubmit();
         }}
-        className="space-y-6 mx-auto w-2/3"
+        className="space-y-6 mx-auto md:w-1/3"
       >
         <div className="w-full">
           <form.Field name="name">
