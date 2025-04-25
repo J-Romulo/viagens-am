@@ -1,3 +1,9 @@
+import { BuildingContent } from '../../../components/BuildingContent';
+
 export default function Settings() {
-  return <h1>Settings</h1>;
+  return (
+    <div className='flex h-full w-full flex-col overflow-y-auto rounded-lg bg-white px-10 py-5 shadow-lg'>
+      <BuildingContent />
+    </div>
+  );
 }
