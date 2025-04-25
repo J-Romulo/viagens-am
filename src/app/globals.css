@@ -1,24 +1,25 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @layer base {
   :root {
     --background: var(--color-neutral-100);
   }
-  
+
   * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
   }
-  
-  html, body {
+
+  html,
+  body {
     height: 100%;
   }
-  
+
   html {
     scroll-behavior: smooth;
   }
-      
+
   body {
     background: var(--color-primary-100);
     -webkit-font-smoothing: antialiased;
@@ -27,68 +28,68 @@
 
 :root {
   /* Primary (Blue) - Para botões principais, destaques */
-  --color-primary-100: #e0e7ff;  /* Background sutil */
-  --color-primary-200: #c7d2fe;  /* Hover suave */
-  --color-primary-300: #818cf8;  /* Interativo */
-  --color-primary-400: #6366f1;  /* Botões principais */
-  --color-primary-500: #4f46e5;  /* Texto destacado */
-  --color-primary-600: #3730a3;  /* Texto forte / Bordas */
+  --color-primary-100: #e0e7ff; /* Background sutil */
+  --color-primary-200: #c7d2fe; /* Hover suave */
+  --color-primary-300: #818cf8; /* Interativo */
+  --color-primary-400: #6366f1; /* Botões principais */
+  --color-primary-500: #4f46e5; /* Texto destacado */
+  --color-primary-600: #3730a3; /* Texto forte / Bordas */
 
   /* Secondary (Yellow) - Para alertas, ícones e destaques */
-  --color-secondary-100: #fef9c3;  /* Fundo de aviso leve */
-  --color-secondary-200: #fde047;  /* Ícones e destaques suaves */
-  --color-secondary-300: #facc15;  /* Realces */
-  --color-secondary-400: #eab308;  /* Elementos interativos */
-  --color-secondary-500: #ca8a04;  /* Texto importante */
-  --color-secondary-600: #a16207;  /* Texto forte / Bordas */
+  --color-secondary-100: #fef9c3; /* Fundo de aviso leve */
+  --color-secondary-200: #fde047; /* Ícones e destaques suaves */
+  --color-secondary-300: #facc15; /* Realces */
+  --color-secondary-400: #eab308; /* Elementos interativos */
+  --color-secondary-500: #ca8a04; /* Texto importante */
+  --color-secondary-600: #a16207; /* Texto forte / Bordas */
 
   /* Accent (Orange) - Para botões de ação, alertas e chamadas */
-  --color-accent-100: #ffedd5;  /* Fundo de alerta leve */
-  --color-accent-200: #fdba74;  /* Ícones e destaques */
-  --color-accent-300: #fb923c;  /* Botões secundários */
-  --color-accent-400: #f97316;  /* Elementos interativos */
-  --color-accent-500: #ea580c;  /* Texto importante */
-  --color-accent-600: #c2410c;  /* Texto forte / Bordas */
+  --color-accent-100: #ffedd5; /* Fundo de alerta leve */
+  --color-accent-200: #fdba74; /* Ícones e destaques */
+  --color-accent-300: #fb923c; /* Botões secundários */
+  --color-accent-400: #f97316; /* Elementos interativos */
+  --color-accent-500: #ea580c; /* Texto importante */
+  --color-accent-600: #c2410c; /* Texto forte / Bordas */
 
   /* Neutral - Para backgrounds, bordas e texto */
-  --color-neutral-100: #f4f4f5;  /* Background geral */
-  --color-neutral-200: #e4e4e7;  /* Cartões e containers */
-  --color-neutral-300: #d4d4d8;  /* Bordas suaves */
-  --color-neutral-400: #a1a1aa;  /* Texto secundário */
-  --color-neutral-500: #52525b;  /* Texto principal */
-  --color-neutral-600: #27272a;  /* Texto forte / Títulos */
+  --color-neutral-100: #f4f4f5; /* Background geral */
+  --color-neutral-200: #e4e4e7; /* Cartões e containers */
+  --color-neutral-300: #d4d4d8; /* Bordas suaves */
+  --color-neutral-400: #a1a1aa; /* Texto secundário */
+  --color-neutral-500: #52525b; /* Texto principal */
+  --color-neutral-600: #27272a; /* Texto forte / Títulos */
 }
 
 @theme {
   /* Primary (Blue) - Para botões principais, destaques */
-  --color-primary-100: #e0e7ff;  /* Background sutil */
-  --color-primary-200: #c7d2fe;  /* Hover suave */
-  --color-primary-300: #818cf8;  /* Interativo */
-  --color-primary-400: #6366f1;  /* Botões principais */
-  --color-primary-500: #4f46e5;  /* Texto destacado */
-  --color-primary-600: #3730a3;  /* Texto forte / Bordas */
+  --color-primary-100: #e0e7ff; /* Background sutil */
+  --color-primary-200: #c7d2fe; /* Hover suave */
+  --color-primary-300: #818cf8; /* Interativo */
+  --color-primary-400: #6366f1; /* Botões principais */
+  --color-primary-500: #4f46e5; /* Texto destacado */
+  --color-primary-600: #3730a3; /* Texto forte / Bordas */
 
   /* Secondary (Yellow) - Para alertas, ícones e destaques */
-  --color-secondary-100: #fef9c3;  /* Fundo de aviso leve */
-  --color-secondary-200: #fde047;  /* Ícones e destaques suaves */
-  --color-secondary-300: #facc15;  /* Realces */
-  --color-secondary-400: #eab308;  /* Elementos interativos */
-  --color-secondary-500: #ca8a04;  /* Texto importante */
-  --color-secondary-600: #a16207;  /* Texto forte / Bordas */
+  --color-secondary-100: #fef9c3; /* Fundo de aviso leve */
+  --color-secondary-200: #fde047; /* Ícones e destaques suaves */
+  --color-secondary-300: #facc15; /* Realces */
+  --color-secondary-400: #eab308; /* Elementos interativos */
+  --color-secondary-500: #ca8a04; /* Texto importante */
+  --color-secondary-600: #a16207; /* Texto forte / Bordas */
 
   /* Accent (Orange) - Para botões de ação, alertas e chamadas */
-  --color-accent-100: #ffedd5;  /* Fundo de alerta leve */
-  --color-accent-200: #fdba74;  /* Ícones e destaques */
-  --color-accent-300: #fb923c;  /* Botões secundários */
-  --color-accent-400: #f97316;  /* Elementos interativos */
-  --color-accent-500: #ea580c;  /* Texto importante */
-  --color-accent-600: #c2410c;  /* Texto forte / Bordas */
+  --color-accent-100: #ffedd5; /* Fundo de alerta leve */
+  --color-accent-200: #fdba74; /* Ícones e destaques */
+  --color-accent-300: #fb923c; /* Botões secundários */
+  --color-accent-400: #f97316; /* Elementos interativos */
+  --color-accent-500: #ea580c; /* Texto importante */
+  --color-accent-600: #c2410c; /* Texto forte / Bordas */
 
   /* Neutral - Para backgrounds, bordas e texto */
-  --color-neutral-100: #f4f4f5;  /* Background geral */
-  --color-neutral-200: #e4e4e7;  /* Cartões e containers */
-  --color-neutral-300: #d4d4d8;  /* Bordas suaves */
-  --color-neutral-400: #a1a1aa;  /* Texto secundário */
-  --color-neutral-500: #52525b;  /* Texto principal */
-  --color-neutral-600: #27272a;  /* Texto forte / Títulos */
+  --color-neutral-100: #f4f4f5; /* Background geral */
+  --color-neutral-200: #e4e4e7; /* Cartões e containers */
+  --color-neutral-300: #d4d4d8; /* Bordas suaves */
+  --color-neutral-400: #a1a1aa; /* Texto secundário */
+  --color-neutral-500: #52525b; /* Texto principal */
+  --color-neutral-600: #27272a; /* Texto forte / Títulos */
 }

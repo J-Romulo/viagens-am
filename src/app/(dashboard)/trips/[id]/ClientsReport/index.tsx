@@ -1,10 +1,17 @@
-
-import { toast } from "react-toastify";
-import { Trip } from "../../../../../@types/Trip";
-import { Document, pdf, Page, StyleSheet, View, Text, Image } from "@react-pdf/renderer";
-import { ReactNode } from "react";
-import { User } from "../../../../../@types/User";
-import AMLogo from "../../../../../assets/am-logo.png";
+import { toast } from 'react-toastify';
+import { Trip } from '../../../../../@types/Trip';
+import {
+  Document,
+  pdf,
+  Page,
+  StyleSheet,
+  View,
+  Text,
+  Image,
+} from '@react-pdf/renderer';
+import { ReactNode } from 'react';
+import { User } from '../../../../../@types/User';
+import AMLogo from '../../../../../assets/am-logo.png';
 
 // Define styles using the application's color scheme
 const styles = StyleSheet.create({
@@ -28,7 +35,7 @@ const styles = StyleSheet.create({
     objectFit: 'contain',
     borderRadius: '50px',
     backgroundColor: 'white',
-    opacity: 1
+    opacity: 1,
   },
   headerInfo: {
     flex: 1,
@@ -148,10 +155,14 @@ const formatDate = (date: Date) => {
 // Get room type display name
 const getRoomTypeDisplayName = (type: string): string => {
   switch (type) {
-    case 'doubleCouple': return 'Quarto Duplo (Casal)';
-    case 'doubleSingle': return 'Quarto Duplo (Solteiro)';
-    case 'triple': return 'Quarto Triplo';
-    default: return 'Outro Tipo de Quarto';
+    case 'doubleCouple':
+      return 'Quarto Duplo (Casal)';
+    case 'doubleSingle':
+      return 'Quarto Duplo (Solteiro)';
+    case 'triple':
+      return 'Quarto Triplo';
+    default:
+      return 'Outro Tipo de Quarto';
   }
 };
 
@@ -161,11 +172,11 @@ const fetchImageAsBase64 = async (url: string): Promise<string> => {
     const response = await fetch(url, {
       method: 'GET',
     });
-    
+
     if (!response.ok) {
       throw new Error(`Failed to fetch image: ${response.status}`);
     }
-    
+
     const blob = await response.blob();
     return new Promise((resolve) => {
       const reader = new FileReader();
@@ -182,20 +193,20 @@ export function ClientsReport() {
   async function handleGeneratePDF(trip: Trip, user?: User) {
     try {
       const PDFGenerated = await generatePDFContent(trip, user);
-      
+
       const blob = await pdf(PDFGenerated).toBlob();
-      
+
       // Create a temporary URL for the blob
       const url = URL.createObjectURL(blob);
-      
+
       // Create a link element
       const link = document.createElement('a');
       link.href = url;
       link.download = `Viagem_${trip.city}_${trip.uf}.pdf`;
-      
+
       // Simulate a click event to trigger the download
       link.dispatchEvent(new MouseEvent('click'));
-      
+
       // Clean up the temporary URL
       URL.revokeObjectURL(url);
     } catch (error) {
@@ -213,7 +224,7 @@ export function ClientsReport() {
     const stats = {
       totalRooms: 0,
       roomTypes: {} as Record<string, number>,
-      totalTravelers: 0
+      totalTravelers: 0,
     };
 
     // Count rooms by type and total travelers
@@ -221,9 +232,9 @@ export function ClientsReport() {
       if (Array.isArray(rooms)) {
         stats.totalRooms += rooms.length;
         stats.roomTypes[type] = rooms.length;
-        
+
         // Count travelers in this room type
-        rooms.forEach(room => {
+        rooms.forEach((room) => {
           if (Array.isArray(room.travelers)) {
             stats.totalTravelers += room.travelers.length;
           }
@@ -233,11 +244,11 @@ export function ClientsReport() {
 
     return stats;
   };
-  
+
   async function generatePDFContent(trip: Trip, user?: User) {
     // Prepare avatar image - fetch user avatar if available
     let avatarImage = AMLogo.src;
-    
+
     if (user?.avatar) {
       try {
         const avatarUrl = `${process.env.NEXT_PUBLIC_API_URL}/images/avatars/${user.avatar}`;
@@ -251,7 +262,7 @@ export function ClientsReport() {
 
     // Create an array to ensure react-pdf renders efficiently
     const roomsContent: ReactNode[] = [];
-    
+
     if (trip.rooms) {
       Object.entries(trip.rooms).forEach(([roomType, rooms]) => {
         if (Array.isArray(rooms) && rooms.length > 0) {
@@ -261,54 +272,71 @@ export function ClientsReport() {
               {getRoomTypeDisplayName(roomType)} ({rooms.length})
             </Text>
           );
-          
+
           // Add each room and its travelers
           rooms.forEach((room, index) => {
             roomsContent.push(
               <View key={`room-${roomType}-${room.id}`} wrap={false}>
-                <Text style={styles.roomTitle}>
-                  Quarto #{index + 1}
-                </Text>
-                
+                <Text style={styles.roomTitle}>Quarto #{index + 1}</Text>
+
                 {!room.travelers || room.travelers.length === 0 ? (
-                  <Text style={styles.emptyRoom}>Nenhum cliente neste quarto.</Text>
+                  <Text style={styles.emptyRoom}>
+                    Nenhum cliente neste quarto.
+                  </Text>
                 ) : (
                   room.travelers.map((traveler, idx) => (
-                    <View style={styles.clientCard} key={`traveler-${room.id}-${idx}`}>
-                      <Text style={styles.clientName}>{traveler.full_name}</Text>
-                      
+                    <View
+                      style={styles.clientCard}
+                      key={`traveler-${room.id}-${idx}`}
+                    >
+                      <Text style={styles.clientName}>
+                        {traveler.full_name}
+                      </Text>
+
                       <View style={styles.clientDetail}>
                         <Text style={styles.clientDetailLabel}>CPF:</Text>
-                        <Text style={styles.clientDetailValue}>{traveler.cpf}</Text>
+                        <Text style={styles.clientDetailValue}>
+                          {traveler.cpf}
+                        </Text>
                       </View>
-                      
+
                       {traveler.rg && (
                         <View style={styles.clientDetail}>
                           <Text style={styles.clientDetailLabel}>RG:</Text>
-                          <Text style={styles.clientDetailValue}>{traveler.rg}</Text>
+                          <Text style={styles.clientDetailValue}>
+                            {traveler.rg}
+                          </Text>
                         </View>
                       )}
-                      
+
                       {traveler.birth_date && (
                         <View style={styles.clientDetail}>
-                          <Text style={styles.clientDetailLabel}>Nascimento:</Text>
+                          <Text style={styles.clientDetailLabel}>
+                            Nascimento:
+                          </Text>
                           <Text style={styles.clientDetailValue}>
                             {formatDate(traveler.birth_date)}
                           </Text>
                         </View>
                       )}
-                      
+
                       {traveler.email && (
                         <View style={styles.clientDetail}>
                           <Text style={styles.clientDetailLabel}>Email:</Text>
-                          <Text style={styles.clientDetailValue}>{traveler.email}</Text>
+                          <Text style={styles.clientDetailValue}>
+                            {traveler.email}
+                          </Text>
                         </View>
                       )}
-                      
+
                       {traveler.phone && (
                         <View style={styles.clientDetail}>
-                          <Text style={styles.clientDetailLabel}>Telefone:</Text>
-                          <Text style={styles.clientDetailValue}>{traveler.phone}</Text>
+                          <Text style={styles.clientDetailLabel}>
+                            Telefone:
+                          </Text>
+                          <Text style={styles.clientDetailValue}>
+                            {traveler.phone}
+                          </Text>
                         </View>
                       )}
                     </View>
@@ -323,48 +351,56 @@ export function ClientsReport() {
 
     return (
       <Document>
-        <Page size="A4" style={styles.page}>
+        <Page size='A4' style={styles.page}>
           {/* Header with Logo */}
           <View style={styles.header} fixed>
-            <Image 
-              src={avatarImage}
-              style={styles.logo}
-            />
+            <Image src={avatarImage} style={styles.logo} />
             <View style={styles.headerInfo}>
-              <Text style={styles.title}>Viagem - {trip.city}/{trip.uf}</Text>
-              <Text style={styles.subtitle}>Relatório de quartos e hóspedes</Text>
+              <Text style={styles.title}>
+                Viagem - {trip.city}/{trip.uf}
+              </Text>
+              <Text style={styles.subtitle}>
+                Relatório de quartos e hóspedes
+              </Text>
             </View>
           </View>
-          
+
           {/* Room Summary */}
           <View style={styles.roomSummary}>
             {Object.entries(roomStats.roomTypes).map(([type, count]) => (
               <View style={styles.roomCountColumn} key={type}>
-                <Text style={styles.roomCountTitle}>{getRoomTypeDisplayName(type)}</Text>
+                <Text style={styles.roomCountTitle}>
+                  {getRoomTypeDisplayName(type)}
+                </Text>
                 <Text style={styles.roomCountValue}>{count}</Text>
               </View>
             ))}
             <View style={styles.roomCountColumn}>
               <Text style={styles.roomCountTitle}>Total de hóspedes</Text>
-              <Text style={styles.roomCountValue}>{roomStats.totalTravelers}</Text>
+              <Text style={styles.roomCountValue}>
+                {roomStats.totalTravelers}
+              </Text>
             </View>
           </View>
-          
+
           {roomsContent.length > 0 ? (
             roomsContent
           ) : (
             <Text style={styles.emptyRoom}>Nenhum quarto cadastrado.</Text>
           )}
-          
+
           {/* Footer with page number */}
-          <Text 
+          <Text
             style={styles.pageNumber}
-            render={({ pageNumber, totalPages }) => `${pageNumber} de ${totalPages}`}
+            render={({ pageNumber, totalPages }) =>
+              `${pageNumber} de ${totalPages}`
+            }
             fixed
           />
-          
+
           <Text style={styles.footer} fixed>
-            Relatório gerado em {new Date().toLocaleDateString('pt-BR')} às {new Date().toLocaleTimeString('pt-BR')}
+            Relatório gerado em {new Date().toLocaleDateString('pt-BR')} às{' '}
+            {new Date().toLocaleTimeString('pt-BR')}
           </Text>
         </Page>
       </Document>
@@ -372,6 +408,6 @@ export function ClientsReport() {
   }
 
   return {
-      generatePDF: handleGeneratePDF
-  }
+    generatePDF: handleGeneratePDF,
+  };
 }

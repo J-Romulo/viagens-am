@@ -1,4 +1,4 @@
-"use client"
+'use client';
 
 import { FaUser, FaSignOutAlt } from 'react-icons/fa';
 import { AuthContext } from '../../../Contexts/AuthContext';
@@ -6,28 +6,34 @@ import { use } from 'react';
 import { useRouter } from 'next/navigation';
 
 export function ProfileMenu() {
-    const router = useRouter()
-    const { signOut } = use(AuthContext);
+  const router = useRouter();
+  const { signOut } = use(AuthContext);
 
-    return (
-        <div className="w-48 bg-white shadow-lg rounded-md overflow-hidden mt-1">
-          <nav className="p-2">
-            <ul className="space-y-1">
-              <li>
-                <button className="flex items-center p-2 rounded-md w-full hover:bg-primary-100" onClick={() => router.push('/profile')}>
-                    <FaUser className="mr-3 text-primary-600 text-lg" />
-                    <span className="font-medium text-primary-600">Perfil</span>
-                </button>
-              </li>
-              
-              <li className="pt-2 mt-1 border-t">
-                <button className="flex items-center p-2 rounded-md w-full hover:bg-primary-100" onClick={signOut}>
-                    <FaSignOutAlt className="mr-3 text-primary-600 text-lg" />
-                    <span className="font-medium text-primary-600">Sair</span>
-                </button>
-              </li>
-            </ul>
-          </nav>
-        </div>
-      );
+  return (
+    <div className='mt-1 w-48 overflow-hidden rounded-md bg-white shadow-lg'>
+      <nav className='p-2'>
+        <ul className='space-y-1'>
+          <li>
+            <button
+              className='hover:bg-primary-100 flex w-full items-center rounded-md p-2'
+              onClick={() => router.push('/profile')}
+            >
+              <FaUser className='text-primary-600 mr-3 text-lg' />
+              <span className='text-primary-600 font-medium'>Perfil</span>
+            </button>
+          </li>
+
+          <li className='mt-1 border-t pt-2'>
+            <button
+              className='hover:bg-primary-100 flex w-full items-center rounded-md p-2'
+              onClick={signOut}
+            >
+              <FaSignOutAlt className='text-primary-600 mr-3 text-lg' />
+              <span className='text-primary-600 font-medium'>Sair</span>
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  );
 }

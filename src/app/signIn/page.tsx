@@ -1,130 +1,127 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { Button } from "../../components/Button";
-import { TextInput } from "../../components/TextInput";
-import { PasswordInput } from "../../components/PasswordInput";
-import { useForm } from "@tanstack/react-form";
-import { z } from "zod";
-import Loader from "react-spinners/ClipLoader";
-import AMLogo from "../../assets/am-logo.png";
-import { AuthContext } from "../../Contexts/AuthContext";
-import { use } from "react";
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { Button } from '../../components/Button';
+import { TextInput } from '../../components/TextInput';
+import { PasswordInput } from '../../components/PasswordInput';
+import { useForm } from '@tanstack/react-form';
+import { z } from 'zod';
+import Loader from 'react-spinners/ClipLoader';
+import AMLogo from '../../assets/am-logo.png';
+import { AuthContext } from '../../Contexts/AuthContext';
+import { use } from 'react';
 
 const signInSchema = z.object({
-    email: z.string()
-      .email("Email inválido")
-      .min(1, "Email é obrigatório"),
-    
-    password: z.string()
-      .min(6, "A senha deve ter no mínimo 6 caracteres")
-      .max(256, "A senha deve ter no máximo 256 caracteres")
+  email: z.string().email('Email inválido').min(1, 'Email é obrigatório'),
+
+  password: z
+    .string()
+    .min(6, 'A senha deve ter no mínimo 6 caracteres')
+    .max(256, 'A senha deve ter no máximo 256 caracteres'),
 });
 
 export default function SignIn() {
-    const { signIn } = use(AuthContext);
+  const { signIn } = use(AuthContext);
 
-    const form = useForm({
-        defaultValues: {
-            email: "",
-            password: "",
-        },
-        onSubmit: async ({ value }) => {
-            await handleSubmit(value);
-        },
-        validators: {
-            onChange: signInSchema,
-        },
-    })
-    const router = useRouter();
+  const form = useForm({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+    onSubmit: async ({ value }) => {
+      await handleSubmit(value);
+    },
+    validators: {
+      onChange: signInSchema,
+    },
+  });
+  const router = useRouter();
 
-    async function handleSubmit(data: {email: string; password: string; }) {
-            await signIn({email: data.email, password: data.password})
+  async function handleSubmit(data: { email: string; password: string }) {
+    await signIn({ email: data.email, password: data.password });
 
-            router.push("/home");
-    }
+    router.push('/home');
+  }
 
-    return (
-        <div className="relative w-80/100 h-80/100 md:w-2/5 md:h-5/6 p-1 pb-3 md:p-6 flex flex-col items-center justify-center bg-white rounded-lg shadow-lg overflow-y-auto">
-            <div className="w-full h-full flex flex-col items-center justify-center">
-                <Image src={AMLogo} alt="AM Viagens logo" width={290} height={150} unoptimized/>
-            </div>
+  return (
+    <div className='relative flex h-80/100 w-80/100 flex-col items-center justify-center overflow-y-auto rounded-lg bg-white p-1 pb-3 shadow-lg md:h-5/6 md:w-2/5 md:p-6'>
+      <div className='flex h-full w-full flex-col items-center justify-center'>
+        <Image
+          src={AMLogo}
+          alt='AM Viagens logo'
+          width={290}
+          height={150}
+          unoptimized
+        />
+      </div>
 
-            <form
-                onSubmit={(e) => {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    form.handleSubmit()
-                }}
-                className="w-full flex flex-col items-center justify-center"
-            >
-                <div className="space-y-6 mx-auto w-2/3">
-                    <form.Field
-                        name="email"
-                    >
-                        {(field) => {
-                            return (
-                                <TextInput
-                                    id={field.name}
-                                    label="Email"
-                                    type="email"
-                                    value={field.state.value}
-                                    onChange={(text) => field.handleChange(text)}
-                                    placeholder="Digite sua email"
-                                    required={true}
-                                />
-                            )
-                        }}
-                    </form.Field>
-                    
-                    <form.Field
-                        name="password"
-                    >
-                        {(field) => {
-                            return (
-                                <PasswordInput
-                                    id={field.name}
-                                    label="Senha"
-                                    value={field.state.value}
-                                    onChange={(text) => field.handleChange(text)}
-                                    placeholder="Digite sua senha"
-                                    required={true}
-                                />
-                            )
-                        }}
-                    </form.Field>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          form.handleSubmit();
+        }}
+        className='flex w-full flex-col items-center justify-center'
+      >
+        <div className='mx-auto w-2/3 space-y-6'>
+          <form.Field name='email'>
+            {(field) => {
+              return (
+                <TextInput
+                  id={field.name}
+                  label='Email'
+                  type='email'
+                  value={field.state.value}
+                  onChange={(text) => field.handleChange(text)}
+                  placeholder='Digite sua email'
+                  required={true}
+                />
+              );
+            }}
+          </form.Field>
 
-                    <form.Subscribe selector={(state) => [state.canSubmit, state.isSubmitting]}>
-                        {([canSubmit, isSubmitting]) => (
-                            <Button 
-                                type="submit"
-                                disabled={!canSubmit}
-                                className="mt-8"
-                            >
-                                {isSubmitting ?
-                                    <Loader
-                                        color={"#FFF"}
-                                        loading={isSubmitting}
-                                        size={20}
-                                    />
-                                : 'Entrar'}
-                            </Button>
-                        )}
-                    </form.Subscribe>
-                </div>
-            </form>
+          <form.Field name='password'>
+            {(field) => {
+              return (
+                <PasswordInput
+                  id={field.name}
+                  label='Senha'
+                  value={field.state.value}
+                  onChange={(text) => field.handleChange(text)}
+                  placeholder='Digite sua senha'
+                  required={true}
+                />
+              );
+            }}
+          </form.Field>
 
-            <p className="text-center text-neutral-700 mt-4 mx-auto">
-                Ainda não possui conta?{" "}
-                <Link
-                    href="/signUp"
-                    className="text-primary-400 font-medium hover:underline"
-                >
-                    Registrar
-                </Link>
-            </p>
+          <form.Subscribe
+            selector={(state) => [state.canSubmit, state.isSubmitting]}
+          >
+            {([canSubmit, isSubmitting]) => (
+              <Button type='submit' disabled={!canSubmit} className='mt-8'>
+                {isSubmitting ? (
+                  <Loader color={'#FFF'} loading={isSubmitting} size={20} />
+                ) : (
+                  'Entrar'
+                )}
+              </Button>
+            )}
+          </form.Subscribe>
         </div>
-    );
+      </form>
+
+      <p className='mx-auto mt-4 text-center text-neutral-700'>
+        Ainda não possui conta?{' '}
+        <Link
+          href='/signUp'
+          className='text-primary-400 font-medium hover:underline'
+        >
+          Registrar
+        </Link>
+      </p>
+    </div>
+  );
 }

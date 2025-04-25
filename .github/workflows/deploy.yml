@@ -2,39 +2,39 @@ name: Deploy to VPS using PM2
 
 on:
   push:
-    branches: [ main ]  # Change this to your main branch name if different
+    branches: [main] # Change this to your main branch name if different
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Deploy to VPS
-      uses: appleboy/ssh-action@master
-      with:
-        host: ${{ secrets.SSH_HOST }}
-        username: ${{ secrets.SSH_USER }}
-        key: ${{ secrets.SSH_KEY_PRIVATE }}
-        script_stop: true  # Stop script execution when an error occurs
-        script: |
-          eval "$(ssh-agent -s)"
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY_PRIVATE }}
+          script_stop: true # Stop script execution when an error occurs
+          script: |
+            eval "$(ssh-agent -s)"
 
-          ssh-add ../root/.ssh/github
-          
-          cd /apps
-          cd viagens-am
-          
-          git pull
+            ssh-add ../root/.ssh/github
 
-          export NVM_DIR="$HOME/.nvm"
-          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            cd /apps
+            cd viagens-am
 
-          npm install
-          npm run build
-          
-          pm2 restart ecosystem.config.js --update-env
-          
-          pm2 list
+            git pull
+
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+            npm install
+            npm run build
+
+            pm2 restart ecosystem.config.js --update-env
+
+            pm2 list
