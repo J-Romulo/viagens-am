@@ -15,7 +15,7 @@ export function ProfileMenu() {
         <ul className='space-y-1'>
           <li>
             <button
-              className='hover:bg-primary-100 flex w-full items-center rounded-md p-2'
+              className='hover:bg-primary-100 flex w-full cursor-pointer items-center rounded-md p-2'
               onClick={() => router.push('/profile')}
             >
               <FaUser className='text-primary-600 mr-3 text-lg' />
@@ -25,7 +25,7 @@ export function ProfileMenu() {
 
           <li className='mt-1 border-t pt-2'>
             <button
-              className='hover:bg-primary-100 flex w-full items-center rounded-md p-2'
+              className='hover:bg-primary-100 flex w-full cursor-pointer items-center rounded-md p-2'
               onClick={signOut}
             >
               <FaSignOutAlt className='text-primary-600 mr-3 text-lg' />
