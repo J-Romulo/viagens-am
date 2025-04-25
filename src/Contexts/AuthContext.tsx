@@ -37,6 +37,7 @@ export function AuthProvider({
 
     React.useEffect(() => {
         if(token){
+            setAuthCookie(token)
             userDataQuery.refetch()
         }
     }, [token])
