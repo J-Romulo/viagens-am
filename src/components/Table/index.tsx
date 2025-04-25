@@ -4,6 +4,8 @@ import {
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+import { EmptyContent } from '../EmptyContent';
+
 export interface TableProps<T> {
   data?: T[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -41,21 +43,32 @@ export function Table<T>(props: TableProps<T>) {
         ))}
       </thead>
       <tbody>
-        {table.getRowModel().rows.map((row, index) => (
-          <tr
-            key={row.id}
-            className={index % 2 === 0 ? 'bg-white' : 'bg-neutral-100'}
-          >
-            {row.getVisibleCells().map((cell) => (
-              <td
-                key={cell.id}
-                className={`border-b border-neutral-300 px-4 py-3 text-neutral-500 w-${cell.column.columnDef.size}`}
-              >
-                {flexRender(cell.column.columnDef.cell, cell.getContext())}
-              </td>
-            ))}
+        {data?.length ? (
+          table.getRowModel().rows.map((row, index) => (
+            <tr
+              key={row.id}
+              className={index % 2 === 0 ? 'bg-white' : 'bg-neutral-100'}
+            >
+              {row.getVisibleCells().map((cell) => (
+                <td
+                  key={cell.id}
+                  className={`border-b border-neutral-300 px-4 py-3 text-neutral-500 w-${cell.column.columnDef.size}`}
+                >
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </td>
+              ))}
+            </tr>
+          ))
+        ) : (
+          <tr className='h-32'>
+            <td
+              colSpan={columns.length}
+              className='text-center text-neutral-500'
+            >
+              <EmptyContent />
+            </td>
           </tr>
-        ))}
+        )}
       </tbody>
     </table>
   );
