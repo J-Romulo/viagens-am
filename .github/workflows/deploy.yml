@@ -11,10 +11,6 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
-      
-    - uses: webfactory/ssh-agent@v0.9.1
-      with:
-       ssh-private-key: ${{ secrets.GIT_SSH_PRIVATE_KEY }}
 
     - name: Deploy to VPS
       uses: appleboy/ssh-action@master
@@ -27,73 +23,14 @@ jobs:
           eval "$(ssh-agent -s)"
 
           ssh-add ../root/.ssh/github
-
-          # List home directory contents
-          echo "Home directory contents:"
-          ls -la
           
-          # Check if apps directory exists
-          if [ ! -d "/apps" ]; then
-            echo "Creating apps directory"
-            mkdir -p /apps
-          fi
-          
-          # Navigate to the apps directory
           cd /apps
-          echo "Apps directory contents:"
-          ls -la
-          
           cd viagens-am
           
-          echo "Current directory: $(pwd)"
-          ls -la
-          
-          # Pull the latest changes
-          echo "Pulling latest changes..."
           git pull
-          
-          # Make sure Node.js environment is activated
-          export NVM_DIR="$HOME/.nvm"
-          [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-          
-          # Check Node.js version
-          echo "Node.js version:"
-          node -v
-          echo "NPM version:"
-          npm -v
-          
-          # Install dependencies
-          echo "Installing dependencies..."
           npm install
+          npm run build
           
-          # Check if PM2 is available
-          if ! command -v pm2 &> /dev/null; then
-            echo "PM2 is not installed. Installing PM2 globally..."
-            npm install -g pm2
-          fi
+          pm2 restart viagens-am --update-env
           
-          # Check for ecosystem.config.js
-          if [ -f ecosystem.config.js ]; then
-            echo "Found ecosystem.config.js, using it to start/reload the application"
-            pm2 reload ecosystem.config.js --update-env
-          else
-            echo "No ecosystem.config.js found, using standard PM2 commands"
-            # Check if the app is already running in PM2
-            if pm2 list | grep -q "viagens-am"; then
-              # Restart the application
-              echo "Restarting existing PM2 process"
-              pm2 restart viagens-am --update-env
-            else
-              # Start the application for the first time
-              echo "Starting new PM2 process"
-              pm2 start npm --name "viagens-am" -- start
-            fi
-          fi
-          
-          # Save PM2 process list
-          echo "Saving PM2 process list"
-          pm2 save
-          
-          # Display PM2 status
-          echo "Current PM2 processes:"
           pm2 list
