@@ -23,6 +23,7 @@ export function NavMenu() {
             <Link
               href='/home'
               className={`flex items-center rounded-md p-3 ${isActive('/home')}`}
+              prefetch={false}
             >
               <FaHome className='mr-3 text-xl' />
               <span className='font-medium'>Início</span>
@@ -33,6 +34,7 @@ export function NavMenu() {
             <Link
               href='/trips'
               className={`flex items-center rounded-md p-3 ${isActive('/trips')}`}
+              prefetch={false}
             >
               <FaPlane className='mr-3 text-xl' />
               <span className='font-medium'>Viagens</span>
@@ -43,6 +45,7 @@ export function NavMenu() {
             <Link
               href='/travelers'
               className={`flex items-center rounded-md p-3 ${isActive('/travelers')}`}
+              prefetch={false}
             >
               <FaUsers className='mr-3 text-xl' />
               <span className='font-medium'>Clientes</span>
@@ -53,6 +56,7 @@ export function NavMenu() {
             <Link
               href='/settings'
               className={`flex items-center rounded-md p-3 ${isActive('/settings')}`}
+              prefetch={false}
             >
               <FaCog className='mr-3 text-xl' />
               <span className='font-medium'>Configurações</span>
