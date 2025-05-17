@@ -4,7 +4,7 @@ import { cookies } from 'next/headers';
 export async function setAuthCookie(token: string) {
   const oneDayInFuture = new Date();
 
-  oneDayInFuture.setDate(oneDayInFuture.getDate() + 7);
+  oneDayInFuture.setDate(oneDayInFuture.getDate() + 1);
 
   const cookieStore = await cookies();
   cookieStore.set('token', token, {
