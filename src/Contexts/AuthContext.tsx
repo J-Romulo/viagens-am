@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
 import { User } from '../@types/User';
 import api from '../services/api';
 import { deleteAuthCookie, setAuthCookie } from '../utils/auth';
@@ -48,29 +48,36 @@ export function AuthProvider({
   const userDataQuery = useQuery({
     queryKey: ['fetchUserAccessData'],
     queryFn: getUserData,
-    enabled: false,
-    retry: false,
     staleTime: Infinity,
+    gcTime: Infinity,
+    retry: false,
+    enabled: false,
   });
 
-  React.useEffect(() => {
-    if (userDataQuery.isSuccess) {
+  useEffect(() => {
+    if (userDataQuery.isSuccess && userDataQuery.data) {
       setUser(userDataQuery.data);
     }
 
-    if (userDataQuery.isError) {
+    if (userDataQuery.isError && userDataQuery.error) {
       console.log(userDataQuery.error);
-      toast.error('Ocorreu um problema ao buscar as informações do usuário');
+      toast.error('Ocorreu um problema ao buscar as informações do usuário');
       signOut();
     }
-  }, [userDataQuery]);
+  }, [
+    userDataQuery.isSuccess,
+    userDataQuery.isError,
+    userDataQuery.data,
+    userDataQuery.error,
+  ]);
 
   async function signIn({ email, password }: SignInCredentials) {
     try {
       const response = await api.post('auth/sign-in', { email, password });
-      const token = response.data.token;
+      const { token, refreshToken } = response.data;
 
       localStorage.setItem('@AM:token', token);
+      localStorage.setItem('@AM:refreshToken', refreshToken);
 
       setUser(response.data.user);
       await setAuthCookie(token);
