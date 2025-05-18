@@ -20,12 +20,15 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
+    const refreshToken = localStorage.getItem('@AM:refreshToken');
     const originalRequest = error.config;
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (
+      error.response.status === 401 &&
+      !originalRequest._retry &&
+      refreshToken
+    ) {
       originalRequest._retry = true;
       try {
-        const refreshToken = localStorage.getItem('@AM:refreshToken');
-
         const response = await api.post('/auth/refresh-token', {
           refreshToken,
         });
