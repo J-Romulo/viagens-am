@@ -81,6 +81,8 @@ export function AuthProvider({
 
       setUser(response.data.user);
       await setAuthCookie(token);
+
+      router.push('/home');
     } catch (error) {
       console.log(error);
       if (isAxiosError(error)) {
