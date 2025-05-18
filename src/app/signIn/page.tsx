@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '../../components/Button';
 import { TextInput } from '../../components/TextInput';
@@ -37,17 +36,14 @@ export default function SignIn() {
       onChange: signInSchema,
     },
   });
-  const router = useRouter();
 
   async function handleSubmit(data: { email: string; password: string }) {
     await signIn({ email: data.email, password: data.password });
-
-    router.push('/home');
   }
 
   return (
     <div className='relative flex h-80/100 w-80/100 flex-col items-center justify-center overflow-y-auto rounded-lg bg-white p-1 pb-3 shadow-lg md:h-5/6 md:w-2/5 md:p-6'>
-      <div className='flex h-full w-full flex-col items-center justify-center'>
+      <div className='flex h-min w-full flex-col items-center justify-center'>
         <Image
           src={AMLogo}
           alt='AM Viagens logo'
@@ -82,20 +78,29 @@ export default function SignIn() {
             }}
           </form.Field>
 
-          <form.Field name='password'>
-            {(field) => {
-              return (
-                <PasswordInput
-                  id={field.name}
-                  label='Senha'
-                  value={field.state.value}
-                  onChange={(text) => field.handleChange(text)}
-                  placeholder='Digite sua senha'
-                  required={true}
-                />
-              );
-            }}
-          </form.Field>
+          <div className='m-0 flex flex-col justify-between'>
+            <form.Field name='password'>
+              {(field) => {
+                return (
+                  <PasswordInput
+                    id={field.name}
+                    label='Senha'
+                    value={field.state.value}
+                    onChange={(text) => field.handleChange(text)}
+                    placeholder='Digite sua senha'
+                    required={true}
+                  />
+                );
+              }}
+            </form.Field>
+
+            <Link
+              href='/resetPassword'
+              className='text-primary-300 ml-auto font-medium hover:underline'
+            >
+              Esqueci a senha
+            </Link>
+          </div>
 
           <form.Subscribe
             selector={(state) => [state.canSubmit, state.isSubmitting]}
