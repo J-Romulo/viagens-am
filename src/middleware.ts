@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
-const publicRoutes = ['/signIn', '/signUp'];
+const publicRoutes = ['/signIn', '/signUp', '/resetPassword'];
 
 export default async function middleware(req: NextRequest) {
   if (req.nextUrl.pathname.startsWith('/_next')) {
