@@ -1,54 +1,74 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { Button } from '../../components/Button';
-import { TextInput } from '../../components/TextInput';
-import { PasswordInput } from '../../components/PasswordInput';
 import { useForm } from '@tanstack/react-form';
 import { z } from 'zod';
 import Loader from 'react-spinners/ClipLoader';
 import AMLogo from '../../assets/am-logo.png';
-import { AuthContext } from '../../Contexts/AuthContext';
-import { use } from 'react';
+import { IoIosArrowBack } from 'react-icons/io';
+import { TextInput } from '../../components/TextInput';
+import { useMutation } from '@tanstack/react-query';
+import { isAxiosError } from 'axios';
+import { toast } from 'react-toastify';
+import { forgotPassword } from '../../services/queries/Session';
 
-const signInSchema = z.object({
+const resetPassword = z.object({
   email: z.string().email('Email inválido').min(1, 'Email é obrigatório'),
-
-  password: z
-    .string()
-    .min(6, 'A senha deve ter no mínimo 6 caracteres')
-    .max(256, 'A senha deve ter no máximo 256 caracteres'),
 });
 
-export default function SignIn() {
-  const { signIn } = use(AuthContext);
-
+export default function ResetPassword() {
   const form = useForm({
     defaultValues: {
       email: '',
-      password: '',
     },
     onSubmit: async ({ value }) => {
-      await handleSubmit(value);
+      await sendEmail(value.email);
     },
     validators: {
-      onChange: signInSchema,
+      onChange: resetPassword,
     },
   });
+  const router = useRouter();
 
-  async function handleSubmit(data: { email: string; password: string }) {
-    await signIn({ email: data.email, password: data.password });
+  const forgotPasswordQuery = useMutation({
+    mutationFn: (email: string) => forgotPassword(email),
+  });
+
+  async function sendEmail(email: string) {
+    try {
+      await forgotPasswordQuery.mutateAsync(email);
+      toast.success(
+        'Email enviado com sucesso. Em instantes verifique sua caixa de entrada.'
+      );
+      router.push('/signIn');
+    } catch (err) {
+      if (isAxiosError(err)) {
+        toast.error(err.response?.data.message);
+        return;
+      }
+      toast.error(
+        'Ocorreu um erro ao tentar enviar o email de esquecimento de senha. Tente novamente em instantes.'
+      );
+    }
   }
 
   return (
     <div className='relative flex h-80/100 w-80/100 flex-col items-center justify-center overflow-y-auto rounded-lg bg-white p-1 pb-3 shadow-lg md:h-5/6 md:w-2/5 md:p-6'>
+      <div
+        className='hover:text-primary-500 text-primary-400 absolute top-7 left-7 cursor-pointer rounded-full p-2 transition'
+        onClick={() => router.push('/signIn')}
+      >
+        <IoIosArrowBack size={30} color='primary-400' />
+      </div>
+
       <div className='flex h-min w-full flex-col items-center justify-center'>
         <Image
           src={AMLogo}
           alt='AM Viagens logo'
-          width={290}
-          height={150}
+          width={250}
+          height={110}
           unoptimized
         />
       </div>
@@ -78,30 +98,6 @@ export default function SignIn() {
             }}
           </form.Field>
 
-          <div className='m-0 flex flex-col justify-between'>
-            <form.Field name='password'>
-              {(field) => {
-                return (
-                  <PasswordInput
-                    id={field.name}
-                    label='Senha'
-                    value={field.state.value}
-                    onChange={(text) => field.handleChange(text)}
-                    placeholder='Digite sua senha'
-                    required={true}
-                  />
-                );
-              }}
-            </form.Field>
-
-            <Link
-              href='/resetPassword'
-              className='text-primary-300 ml-auto font-medium hover:underline'
-            >
-              Esqueci a senha
-            </Link>
-          </div>
-
           <form.Subscribe
             selector={(state) => [state.canSubmit, state.isSubmitting]}
           >
@@ -110,23 +106,13 @@ export default function SignIn() {
                 {isSubmitting ? (
                   <Loader color={'#FFF'} loading={isSubmitting} size={20} />
                 ) : (
-                  'Entrar'
+                  'Enviar email de recuperação'
                 )}
               </Button>
             )}
           </form.Subscribe>
         </div>
       </form>
-
-      <p className='mx-auto mt-4 text-center text-neutral-700'>
-        Ainda não possui conta?{' '}
-        <Link
-          href='/signUp'
-          className='text-primary-400 font-medium hover:underline'
-        >
-          Registrar
-        </Link>
-      </p>
     </div>
   );
 }
