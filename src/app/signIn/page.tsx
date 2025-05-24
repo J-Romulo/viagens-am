@@ -108,7 +108,12 @@ export default function SignIn() {
             {([canSubmit, isSubmitting]) => (
               <Button type='submit' disabled={!canSubmit} className='mt-8'>
                 {isSubmitting ? (
-                  <Loader color={'#FFF'} loading={isSubmitting} size={20} />
+                  <Loader
+                    color={'#FFF'}
+                    loading={isSubmitting}
+                    size={20}
+                    data-testid='signIn-loader-id'
+                  />
                 ) : (
                   'Entrar'
                 )}

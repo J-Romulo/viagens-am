@@ -85,7 +85,11 @@ export default function SignUp() {
         className='hover:text-primary-500 text-primary-400 absolute top-7 left-7 cursor-pointer rounded-full p-2 transition'
         onClick={() => router.push('/signIn')}
       >
-        <IoIosArrowBack size={30} color='primary-400' />
+        <IoIosArrowBack
+          size={30}
+          color='primary-400'
+          data-testid='back-arrow'
+        />
       </div>
 
       <form
@@ -165,7 +169,12 @@ export default function SignUp() {
             {([canSubmit, isSubmitting]) => (
               <Button type='submit' disabled={!canSubmit} className='mt-8'>
                 {isSubmitting ? (
-                  <Loader color={'#FFF'} loading={isSubmitting} size={20} />
+                  <Loader
+                    color={'#FFF'}
+                    loading={isSubmitting}
+                    size={20}
+                    data-testid='signUp-loader-id'
+                  />
                 ) : (
                   'Cadastrar'
                 )}
