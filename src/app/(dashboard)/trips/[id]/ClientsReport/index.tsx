@@ -12,158 +12,144 @@ import {
 import { ReactNode } from 'react';
 import { User } from '../../../../../@types/User';
 import AMLogo from '../../../../../assets/am-logo.png';
+import { getRoomTypeDisplayName } from '../../../../../utils/text';
+import { RoomType } from '../../../../../@types/Trip';
 
 // Define styles using the application's color scheme
 const styles = StyleSheet.create({
   page: {
-    padding: 30,
-    backgroundColor: '#f8fafc', // light bg
+    padding: 36,
+    backgroundColor: '#ffffff',
     fontFamily: 'Helvetica',
   },
   header: {
     flexDirection: 'row',
-    marginBottom: 30,
+    marginBottom: 20,
+    paddingBottom: 14,
     borderBottomWidth: 2,
-    borderBottomColor: '#4f46e5', // --color-primary-500
-    paddingBottom: 15,
+    borderBottomColor: '#4f46e5',
     alignItems: 'center',
   },
   logo: {
-    width: 60,
-    height: 60,
-    marginRight: 15,
+    width: 40,
+    height: 40,
+    marginRight: 12,
     objectFit: 'contain',
-    borderRadius: '50px',
-    backgroundColor: 'white',
-    opacity: 1,
+    borderRadius: 4,
+    backgroundColor: '#eef2ff',
   },
   headerInfo: {
     flex: 1,
   },
   title: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: 'bold',
-    color: '#27272a', // --color-neutral-600
-    marginBottom: 5,
+    color: '#18181b',
+    marginBottom: 2,
   },
   subtitle: {
-    fontSize: 14,
-    color: '#52525b', // --color-neutral-500
-    marginBottom: 2,
+    fontSize: 10,
+    color: '#71717a',
   },
   roomSummary: {
     flexDirection: 'row',
-    backgroundColor: '#f4f4f5', // --color-neutral-100
-    padding: 8,
-    borderRadius: 4,
+    backgroundColor: '#4f46e5',
+    borderRadius: 6,
+    padding: 14,
     marginBottom: 20,
-    marginTop: 10,
   },
   roomCountColumn: {
     flex: 1,
+    alignItems: 'center',
   },
   roomCountTitle: {
-    fontSize: 10,
-    fontWeight: 'bold',
-    color: '#3730a3', // --color-primary-600
-    marginBottom: 6,
+    fontSize: 7,
+    color: '#c7d2fe',
+    textTransform: 'uppercase',
+    marginBottom: 4,
   },
   roomCountValue: {
-    fontSize: 14,
+    fontSize: 20,
     fontWeight: 'bold',
-    color: '#4f46e5', // --color-primary-500
+    color: '#ffffff',
   },
   roomTypeSectionTitle: {
-    fontSize: 14,
+    fontSize: 11,
     fontWeight: 'bold',
-    color: '#4f46e5', // --color-primary-500
-    marginBottom: 12,
-    marginTop: 20,
-    backgroundColor: '#eef2ff', // Lighter primary
-    padding: 8,
-    borderRadius: 4,
+    color: '#4f46e5',
+    marginBottom: 6,
+    marginTop: 16,
+    paddingBottom: 5,
+    borderBottomWidth: 1,
+    borderBottomColor: '#6366f1',
   },
   roomTitle: {
-    fontSize: 12,
+    fontSize: 8,
     fontWeight: 'bold',
-    color: '#3730a3', // --color-primary-600
-    marginTop: 12,
-    marginBottom: 10,
-    paddingBottom: 4,
-    borderBottomWidth: 1,
-    borderBottomColor: '#a5b4fc', // --color-primary-300
+    color: '#6366f1',
+    marginTop: 10,
+    marginBottom: 4,
+    textTransform: 'uppercase',
   },
   clientCard: {
-    backgroundColor: '#e4e4e7', // --color-neutral-200
-    padding: 12,
-    marginBottom: 12,
-    borderRadius: 5,
+    backgroundColor: '#f5f3ff',
+    padding: 9,
+    marginBottom: 3,
+    borderRadius: 4,
     borderLeftWidth: 3,
-    borderLeftColor: '#6366f1', // --color-primary-400
+    borderLeftColor: '#6366f1',
   },
   clientName: {
-    fontSize: 12,
+    fontSize: 11,
     fontWeight: 'bold',
-    color: '#27272a', // --color-neutral-600
-    marginBottom: 8,
+    color: '#18181b',
+    marginBottom: 4,
   },
   clientDetail: {
     flexDirection: 'row',
-    marginBottom: 4,
+    marginBottom: 2,
   },
   clientDetailLabel: {
     fontWeight: 'bold',
-    width: 85,
-    color: '#52525b', // --color-neutral-500
-    fontSize: 9,
+    width: 75,
+    color: '#6366f1',
+    fontSize: 8,
   },
   clientDetailValue: {
     flex: 1,
-    color: '#52525b', // --color-neutral-500
-    fontSize: 11,
+    color: '#52525b',
+    fontSize: 8,
   },
   emptyRoom: {
-    color: '#71717a', // --color-neutral-500
+    color: '#a1a1aa',
     fontStyle: 'italic',
-    fontSize: 10,
-    marginBottom: 10,
+    fontSize: 9,
+    marginBottom: 8,
   },
   footer: {
     position: 'absolute',
     bottom: 20,
-    left: 30,
-    right: 30,
+    left: 36,
+    right: 36,
     textAlign: 'center',
-    color: '#a1a1aa', // --color-neutral-400
+    color: '#a1a1aa',
     fontSize: 8,
-    paddingTop: 10,
+    paddingTop: 8,
+    borderTopWidth: 1,
+    borderTopColor: '#e4e4e7',
   },
   pageNumber: {
     position: 'absolute',
     bottom: 20,
-    right: 30,
-    fontSize: 10,
-    color: '#a1a1aa', // --color-neutral-400
+    right: 36,
+    fontSize: 9,
+    color: '#a1a1aa',
   },
 });
 
 // Format date to Brazilian format DD/MM/YYYY
 const formatDate = (date: Date) => {
   return new Date(date).toLocaleDateString('pt-BR');
-};
-
-// Get room type display name
-const getRoomTypeDisplayName = (type: string): string => {
-  switch (type) {
-    case 'doubleCouple':
-      return 'Quarto Duplo (Casal)';
-    case 'doubleSingle':
-      return 'Quarto Duplo (Solteiro)';
-    case 'triple':
-      return 'Quarto Triplo';
-    default:
-      return 'Outro Tipo de Quarto';
-  }
 };
 
 // Function to fetch and convert an image to Base64
@@ -269,7 +255,7 @@ export function ClientsReport() {
           // Add room type section title
           roomsContent.push(
             <Text key={`type-${roomType}`} style={styles.roomTypeSectionTitle}>
-              {getRoomTypeDisplayName(roomType)} ({rooms.length})
+              {getRoomTypeDisplayName(roomType as RoomType)} ({rooms.length})
             </Text>
           );
 
@@ -370,7 +356,7 @@ export function ClientsReport() {
             {Object.entries(roomStats.roomTypes).map(([type, count]) => (
               <View style={styles.roomCountColumn} key={type}>
                 <Text style={styles.roomCountTitle}>
-                  {getRoomTypeDisplayName(type)}
+                  {getRoomTypeDisplayName(type as RoomType)}
                 </Text>
                 <Text style={styles.roomCountValue}>{count}</Text>
               </View>
