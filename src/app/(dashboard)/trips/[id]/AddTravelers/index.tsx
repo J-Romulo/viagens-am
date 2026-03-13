@@ -12,7 +12,7 @@ import { updateTripClients } from '../../../../../services/queries/Trips';
 
 type RoomType = 'doubleCouple' | 'doubleSingle' | 'triple';
 
-interface AddTravelersProps {
+export interface AddTravelersProps {
   tripId: string;
   currentRooms?: {
     doubleCouple: Room[];

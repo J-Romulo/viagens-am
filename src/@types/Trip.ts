@@ -20,6 +20,7 @@ export type Trip = {
   updated_at: Date;
 };
 
+export type RoomType = 'doubleCouple' | 'doubleSingle' | 'triple';
 export interface Room {
   id: string;
   travelers: Traveler[];
