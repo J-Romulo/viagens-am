@@ -19,7 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en' className={cn('font-sans', inter.variable)}>
-      <body className='flex flex-col items-center justify-center'>
+      <body className='bg-primary-100 flex flex-col items-center justify-center'>
         <ReactQueryProvider>
           <AuthProvider>{children}</AuthProvider>
         </ReactQueryProvider>
