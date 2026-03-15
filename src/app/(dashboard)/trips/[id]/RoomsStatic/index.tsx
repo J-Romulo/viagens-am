@@ -125,7 +125,7 @@ export function RoomsStatic({
             onClick={() => generatePDF(tripData, user)}
             className='text-primary-400 hover:text-primary-500 transition hover:underline'
           >
-            Gerar relatório de clientes
+            Gerar relatório de quartos
           </button>
         </div>
       </div>

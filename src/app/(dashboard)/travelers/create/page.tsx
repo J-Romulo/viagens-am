@@ -54,14 +54,19 @@ export default function CreateTraveler() {
       router.push('/travelers');
     },
     onError: (error) => {
+      const defaultMessage =
+        'Ocorreu um erro ao criar o cliente. Tente novamente em instantes.';
       if (isAxiosError(error)) {
-        toast.error(error.response?.data.message);
+        const errorMessage = error.response?.data.message;
+        if (Array.isArray(errorMessage)) {
+          toast.error(errorMessage[0]);
+          return;
+        }
+        toast.error(errorMessage || defaultMessage);
         return;
       }
 
-      toast.error(
-        'Ocorreu um erro ao criar o cliente. Tente novamente em instantes.'
-      );
+      toast.error(defaultMessage);
     },
   });
 
