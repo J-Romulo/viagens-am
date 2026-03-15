@@ -13,6 +13,12 @@ export async function getTravelerById(id: string): Promise<Traveler> {
   return data;
 }
 
+export async function listFavorites(): Promise<Traveler[]> {
+  const { data } = await api.get(`/clients/favorites`);
+
+  return data;
+}
+
 type CreateTraveler = Omit<
   Traveler,
   '_id' | 'created_at' | 'updated_at' | 'user_id'

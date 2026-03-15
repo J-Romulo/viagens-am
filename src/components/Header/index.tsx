@@ -5,7 +5,6 @@ import { CustomPopover } from '../Popover';
 import { use, useState } from 'react';
 import { ProfileMenu } from './ProfileMenu';
 import { AuthContext } from '../../Contexts/AuthContext';
-import AMLogoDark from '../../assets/am-logo-dark.png';
 
 export function Header() {
   const { user } = use(AuthContext);
@@ -13,16 +12,7 @@ export function Header() {
   const [isProfileMenuOpened, setIsProfileMenuOpened] = useState(false);
 
   return (
-    <div className='bg-primary-500 flex h-15 w-full items-center justify-between p-4 text-white shadow-lg'>
-      <div>
-        <Image
-          src={AMLogoDark}
-          alt='AM Viagens logo'
-          width={100}
-          height={150}
-          unoptimized
-        />
-      </div>
+    <div className='bg-primary-500 flex h-15 w-full items-center justify-end p-4 text-white shadow-lg'>
       <div className='flex items-center gap-x-3'>
         <p>{user?.name}</p>
 

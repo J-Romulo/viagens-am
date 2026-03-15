@@ -16,11 +16,9 @@ import { Button } from '../../../../components/Button';
 import { z } from 'zod';
 import { useForm } from '@tanstack/react-form';
 import { isAxiosError } from 'axios';
-import { AddTravelers } from './AddTravelers';
-import { IoPerson } from 'react-icons/io5';
-import { IoMdBed } from 'react-icons/io';
 import { ClientsReport } from './ClientsReport';
 import { AuthContext } from '../../../../Contexts/AuthContext';
+import { RoomsStatic } from './RoomsStatic';
 
 const tripSchema = z
   .object({
@@ -54,9 +52,6 @@ const tripSchema = z
       path: ['finish_date'],
     }
   );
-
-// Room type definitions
-type RoomType = 'doubleCouple' | 'doubleSingle' | 'triple';
 
 export default function TripDetails({
   params,
@@ -140,20 +135,6 @@ export default function TripDetails({
   async function handleSubmit(data: Partial<Trip>) {
     await updateTripMutation.mutateAsync({ id, data });
   }
-
-  // Get room type display name
-  const getRoomTypeDisplayName = (type: RoomType): string => {
-    switch (type) {
-      case 'doubleCouple':
-        return 'Quarto Duplo (Casal)';
-      case 'doubleSingle':
-        return 'Quarto Duplo (Solteiro)';
-      case 'triple':
-        return 'Quarto Triplo';
-      default:
-        return '';
-    }
-  };
 
   // Count total travelers
   const getTotalTravelers = () => {
@@ -354,242 +335,13 @@ export default function TripDetails({
         </div>
       </form>
 
-      {/* Simple Rooms Section */}
-      <div className='mt-16 w-full'>
-        <div className='mb-6 flex items-center justify-between'>
-          <h3 className='text-primary-500 text-lg font-semibold'>
-            Clientes ({getTotalTravelers()})
-          </h3>
-          <div className='align-center flex gap-x-3'>
-            <AddTravelers tripId={id} currentRooms={tripQuery.data.rooms} />
-            <button
-              onClick={() => generatePDF(tripQuery.data, user!)}
-              className='text-primary-400 hover:text-primary-500 transition hover:underline'
-            >
-              Gerar relatório de clientes
-            </button>
-          </div>
-        </div>
-
-        {/* Room Types */}
-        <div className='mb-10 space-y-8'>
-          {/* Double Couple Rooms */}
-          <div className='overflow-hidden rounded-lg border border-gray-200'>
-            <div className='border-b border-gray-200 bg-gray-50 px-6 py-3'>
-              <h4 className='font-medium text-gray-900'>
-                {getRoomTypeDisplayName('doubleCouple')} (
-                {tripQuery.data.rooms?.doubleCouple?.length || 0})
-              </h4>
-            </div>
-
-            <div className='space-y-4 p-4'>
-              {!tripQuery.data.rooms?.doubleCouple ||
-              tripQuery.data.rooms.doubleCouple.length === 0 ? (
-                <div className='p-4 text-center text-gray-500'>
-                  Nenhum quarto deste tipo adicionado.
-                </div>
-              ) : (
-                tripQuery.data.rooms.doubleCouple.map((room, index) => (
-                  <div
-                    key={room.id}
-                    className='rounded-lg border border-gray-200'
-                  >
-                    <div className='flex justify-between border-b border-gray-200 bg-gray-50 px-4 py-2'>
-                      <div className='flex items-center'>
-                        <IoMdBed className='text-primary-500 mr-2' size={18} />
-                        <span className='font-medium'>Quarto #{index + 1}</span>
-                      </div>
-                      <span className='text-sm text-gray-600'>
-                        {room.travelers?.length || 0}{' '}
-                        {(room.travelers?.length || 0) === 1
-                          ? 'cliente'
-                          : 'Clientes'}
-                      </span>
-                    </div>
-
-                    {!room.travelers || room.travelers.length === 0 ? (
-                      <div className='p-3 text-sm text-gray-500'>
-                        Nenhum cliente adicionado
-                      </div>
-                    ) : (
-                      <div className='divide-y divide-gray-100'>
-                        {room.travelers.map((traveler) => (
-                          <div
-                            key={traveler._id}
-                            className='flex items-center justify-between p-3 hover:bg-gray-50'
-                          >
-                            <div>
-                              <p className='text-primary-500 font-medium'>
-                                {traveler.full_name}
-                              </p>
-                              <p className='text-sm text-gray-600'>
-                                CPF: {traveler.cpf}
-                              </p>
-                            </div>
-                            <button
-                              onClick={() =>
-                                router.push(`/travelers/${traveler._id}`)
-                              }
-                              className='text-primary-400 hover:text-primary-500 rounded-full p-1 transition hover:bg-gray-100'
-                              title='Ver detalhes do cliente'
-                            >
-                              <IoPerson size={18} />
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
-
-          {/* Double Single Rooms */}
-          <div className='overflow-hidden rounded-lg border border-gray-200'>
-            <div className='border-b border-gray-200 bg-gray-50 px-6 py-3'>
-              <h4 className='font-medium text-gray-900'>
-                {getRoomTypeDisplayName('doubleSingle')} (
-                {tripQuery.data.rooms?.doubleSingle?.length || 0})
-              </h4>
-            </div>
-
-            <div className='space-y-4 p-4'>
-              {!tripQuery.data.rooms?.doubleSingle ||
-              tripQuery.data.rooms.doubleSingle.length === 0 ? (
-                <div className='p-4 text-center text-gray-500'>
-                  Nenhum quarto deste tipo adicionado.
-                </div>
-              ) : (
-                tripQuery.data.rooms.doubleSingle.map((room, index) => (
-                  <div
-                    key={room.id}
-                    className='rounded-lg border border-gray-200'
-                  >
-                    <div className='flex justify-between border-b border-gray-200 bg-gray-50 px-4 py-2'>
-                      <div className='flex items-center'>
-                        <IoMdBed className='text-primary-500 mr-2' size={18} />
-                        <span className='font-medium'>Quarto #{index + 1}</span>
-                      </div>
-                      <span className='text-sm text-gray-600'>
-                        {room.travelers?.length || 0}{' '}
-                        {(room.travelers?.length || 0) === 1
-                          ? 'cliente'
-                          : 'Clientes'}
-                      </span>
-                    </div>
-
-                    {!room.travelers || room.travelers.length === 0 ? (
-                      <div className='p-3 text-sm text-gray-500'>
-                        Nenhum cliente adicionado
-                      </div>
-                    ) : (
-                      <div className='divide-y divide-gray-100'>
-                        {room.travelers.map((traveler) => (
-                          <div
-                            key={traveler._id}
-                            className='flex items-center justify-between p-3 hover:bg-gray-50'
-                          >
-                            <div>
-                              <p className='text-primary-500 font-medium'>
-                                {traveler.full_name}
-                              </p>
-                              <p className='text-sm text-gray-600'>
-                                CPF: {traveler.cpf}
-                              </p>
-                            </div>
-                            <button
-                              onClick={() =>
-                                router.push(`/travelers/${traveler._id}`)
-                              }
-                              className='text-primary-400 hover:text-primary-500 rounded-full p-1 transition hover:bg-gray-100'
-                              title='Ver detalhes do cliente'
-                            >
-                              <IoPerson size={18} />
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
-
-          {/* Triple Rooms */}
-          <div className='overflow-hidden rounded-lg border border-gray-200'>
-            <div className='border-b border-gray-200 bg-gray-50 px-6 py-3'>
-              <h4 className='font-medium text-gray-900'>
-                {getRoomTypeDisplayName('triple')} (
-                {tripQuery.data.rooms?.triple?.length || 0})
-              </h4>
-            </div>
-
-            <div className='space-y-4 p-4'>
-              {!tripQuery.data.rooms?.triple ||
-              tripQuery.data.rooms.triple.length === 0 ? (
-                <div className='p-4 text-center text-gray-500'>
-                  Nenhum quarto deste tipo adicionado.
-                </div>
-              ) : (
-                tripQuery.data.rooms.triple.map((room, index) => (
-                  <div
-                    key={room.id}
-                    className='rounded-lg border border-gray-200'
-                  >
-                    <div className='flex justify-between border-b border-gray-200 bg-gray-50 px-4 py-2'>
-                      <div className='flex items-center'>
-                        <IoMdBed className='text-primary-500 mr-2' size={18} />
-                        <span className='font-medium'>Quarto #{index + 1}</span>
-                      </div>
-                      <span className='text-sm text-gray-600'>
-                        {room.travelers?.length || 0}{' '}
-                        {(room.travelers?.length || 0) === 1
-                          ? 'cliente'
-                          : 'Clientes'}
-                      </span>
-                    </div>
-
-                    {!room.travelers || room.travelers.length === 0 ? (
-                      <div className='p-3 text-sm text-gray-500'>
-                        Nenhum cliente adicionado
-                      </div>
-                    ) : (
-                      <div className='divide-y divide-gray-100'>
-                        {room.travelers.map((traveler) => (
-                          <div
-                            key={traveler._id}
-                            className='flex items-center justify-between p-3 hover:bg-gray-50'
-                          >
-                            <div>
-                              <p className='text-primary-500 font-medium'>
-                                {traveler.full_name}
-                              </p>
-                              <p className='text-sm text-gray-600'>
-                                CPF: {traveler.cpf}
-                              </p>
-                            </div>
-                            <button
-                              onClick={() =>
-                                router.push(`/travelers/${traveler._id}`)
-                              }
-                              className='text-primary-400 hover:text-primary-500 rounded-full p-1 transition hover:bg-gray-100'
-                              title='Ver detalhes do cliente'
-                            >
-                              <IoPerson size={18} />
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
+      <RoomsStatic
+        tripId={id}
+        tripData={tripQuery.data}
+        user={user!}
+        getTotalTravelers={getTotalTravelers}
+        generatePDF={generatePDF}
+      />
     </div>
   );
 }

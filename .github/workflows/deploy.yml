@@ -18,19 +18,20 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY_PRIVATE }}
-          script_stop: true # Stop script execution when an error occurs
+          port: ${{ secrets.SSH_PORT }}
           script: |
+            set -e
             eval "$(ssh-agent -s)"
 
-            ssh-add ../root/.ssh/github
+            ssh-add /home/romulo/.ssh/github
 
-            cd /apps
-            cd viagens-am
+            cd /home/romulo/apps/viagens-am
 
             git pull
 
             export NVM_DIR="$HOME/.nvm"
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            nvm use 22
 
             npm install
             npm run build

@@ -3,6 +3,10 @@ import './globals.css';
 import { ToastContainer } from 'react-toastify';
 import ReactQueryProvider from '../utils/ReactQueryProvider';
 import { AuthProvider } from '../Contexts/AuthContext';
+import { Inter } from 'next/font/google';
+import { cn } from '@/lib/utils';
+
+const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
   title: 'Viagens AM',
@@ -14,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang='en'>
+    <html lang='en' className={cn('font-sans', inter.variable)}>
       <body className='flex flex-col items-center justify-center'>
         <ReactQueryProvider>
           <AuthProvider>{children}</AuthProvider>
