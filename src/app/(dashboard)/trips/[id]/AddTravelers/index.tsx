@@ -12,7 +12,7 @@ import { updateTripClients } from '../../../../../services/queries/Trips';
 
 type RoomType = 'doubleCouple' | 'doubleSingle' | 'triple';
 
-interface AddTravelersProps {
+export interface AddTravelersProps {
   tripId: string;
   currentRooms?: {
     doubleCouple: Room[];
@@ -209,7 +209,7 @@ export function AddTravelers({ tripId, currentRooms }: AddTravelersProps) {
         onClick={() => setIsOpen(true)}
         className='text-primary-400 hover:text-primary-500 transition hover:underline'
       >
-        Atualizar clientes
+        Gerenciar quartos
       </button>
       <CustomModal
         isOpen={isOpen}

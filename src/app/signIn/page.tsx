@@ -42,7 +42,7 @@ export default function SignIn() {
   }
 
   return (
-    <div className='relative flex h-80/100 w-80/100 flex-col items-center justify-center overflow-y-auto rounded-lg bg-white p-1 pb-3 shadow-lg md:h-5/6 md:w-2/5 md:p-6'>
+    <div className='relative flex h-80/100 w-80/100 flex-col items-center justify-center overflow-y-auto rounded-lg bg-white p-1 pb-3 shadow-lg md:h-5/6 md:w-3/5 md:p-6 lg:w-2/5'>
       <div className='flex h-min w-full flex-col items-center justify-center'>
         <Image
           src={AMLogo}
@@ -108,7 +108,12 @@ export default function SignIn() {
             {([canSubmit, isSubmitting]) => (
               <Button type='submit' disabled={!canSubmit} className='mt-8'>
                 {isSubmitting ? (
-                  <Loader color={'#FFF'} loading={isSubmitting} size={20} />
+                  <Loader
+                    color={'#FFF'}
+                    loading={isSubmitting}
+                    size={20}
+                    data-testid='signIn-loader-id'
+                  />
                 ) : (
                   'Entrar'
                 )}

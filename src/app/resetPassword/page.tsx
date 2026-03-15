@@ -55,12 +55,16 @@ export default function ResetPassword() {
   }
 
   return (
-    <div className='relative flex h-80/100 w-80/100 flex-col items-center justify-center overflow-y-auto rounded-lg bg-white p-1 pb-3 shadow-lg md:h-5/6 md:w-2/5 md:p-6'>
+    <div className='relative flex h-80/100 w-80/100 flex-col items-center justify-center overflow-y-auto rounded-lg bg-white p-1 pb-3 shadow-lg md:h-5/6 md:w-3/5 md:p-6 lg:w-2/5'>
       <div
         className='hover:text-primary-500 text-primary-400 absolute top-7 left-7 cursor-pointer rounded-full p-2 transition'
         onClick={() => router.push('/signIn')}
       >
-        <IoIosArrowBack size={30} color='primary-400' />
+        <IoIosArrowBack
+          size={30}
+          color='primary-400'
+          data-testid='back-arrow'
+        />
       </div>
 
       <div className='flex h-min w-full flex-col items-center justify-center'>
@@ -104,7 +108,12 @@ export default function ResetPassword() {
             {([canSubmit, isSubmitting]) => (
               <Button type='submit' disabled={!canSubmit} className='mt-8'>
                 {isSubmitting ? (
-                  <Loader color={'#FFF'} loading={isSubmitting} size={20} />
+                  <Loader
+                    color={'#FFF'}
+                    loading={isSubmitting}
+                    size={20}
+                    data-testid='reset-password-loader-id'
+                  />
                 ) : (
                   'Enviar email de recuperação'
                 )}

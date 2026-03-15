@@ -5,6 +5,14 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { EmptyContent } from '../EmptyContent';
+import {
+  Table as ShadcnTable,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 
 export interface TableProps<T> {
   data?: T[];
@@ -22,14 +30,14 @@ export function Table<T>(props: TableProps<T>) {
   });
 
   return (
-    <table className='w-full border-collapse overflow-hidden rounded-lg'>
-      <thead className='bg-primary-500 text-white'>
+    <ShadcnTable className='w-full overflow-hidden rounded-lg'>
+      <TableHeader className='bg-primary-500 text-white'>
         {table.getHeaderGroups().map((headerGroup) => (
-          <tr key={headerGroup.id}>
+          <TableRow key={headerGroup.id} className='hover:bg-primary-500'>
             {headerGroup.headers.map((header) => (
-              <th
+              <TableHead
                 key={header.id}
-                className='border-primary-600 border-b px-4 py-3 text-left font-medium'
+                className='border-primary-600 border-b px-4 py-3 text-left font-medium text-white'
               >
                 {header.isPlaceholder
                   ? null
@@ -37,39 +45,39 @@ export function Table<T>(props: TableProps<T>) {
                       header.column.columnDef.header,
                       header.getContext()
                     )}
-              </th>
+              </TableHead>
             ))}
-          </tr>
+          </TableRow>
         ))}
-      </thead>
-      <tbody>
+      </TableHeader>
+      <TableBody>
         {data?.length ? (
           table.getRowModel().rows.map((row, index) => (
-            <tr
+            <TableRow
               key={row.id}
               className={index % 2 === 0 ? 'bg-white' : 'bg-neutral-100'}
             >
               {row.getVisibleCells().map((cell) => (
-                <td
+                <TableCell
                   key={cell.id}
-                  className={`border-b border-neutral-300 px-4 py-3 text-neutral-500 w-${cell.column.columnDef.size}`}
+                  className='border-b border-neutral-300 px-4 py-3 text-neutral-500'
                 >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
+                </TableCell>
               ))}
-            </tr>
+            </TableRow>
           ))
         ) : (
-          <tr className='h-32'>
-            <td
+          <TableRow className='h-32 hover:bg-transparent'>
+            <TableCell
               colSpan={columns.length}
               className='text-center text-neutral-500'
             >
               <EmptyContent />
-            </td>
-          </tr>
+            </TableCell>
+          </TableRow>
         )}
-      </tbody>
-    </table>
+      </TableBody>
+    </ShadcnTable>
   );
 }
