@@ -4,7 +4,10 @@ import { NextRequest, NextResponse } from 'next/server';
 const publicRoutes = ['/signIn', '/signUp', '/resetPassword'];
 
 export default async function middleware(req: NextRequest) {
-  if (req.nextUrl.pathname.startsWith('/_next')) {
+  if (
+    req.nextUrl.pathname.startsWith('/_next') ||
+    req.nextUrl.pathname === '/favicon.ico'
+  ) {
     return NextResponse.next();
   }
 
